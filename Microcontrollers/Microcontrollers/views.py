@@ -1,3 +1,6 @@
+'''This module contains the logic for rendering pages for the Microcontrollers
+application. It handles the index view, login view, and logout views.'''
+
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponseRedirect
@@ -28,5 +31,4 @@ def logout(request):
     logout(request)
     request.session.flush()
     request.user = AnonymousUser
-
     return HttpResponseRedirect('accounts/loggedout/')

@@ -1,7 +1,9 @@
+''' This module contains the presentation logic for the Admin panel used by
+the Microcontrollers application.'''
+# pylint: disable=too-many-public-methods, no-value-for-parameter, no-member
+
 from django.contrib import admin
 from Receiver.models import Node, Record, Sensor
-# Register your models here.
-
 
 class RecordInline(admin.TabularInline):
     '''

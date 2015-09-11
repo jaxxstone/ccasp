@@ -1,3 +1,6 @@
+'''This module contains the URL dispatcher for the Receiver application in 
+the 'records' namespace'''
+
 from django.conf.urls import url
 from Receiver.views import overview, daily_report, weekly_report, monthly_report, yearly_report, custom_form, custom_report, report_list, node_list, node_status
 
