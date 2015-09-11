@@ -5,6 +5,9 @@ from functools import partial
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 class CustomReport(forms.Form):
+    '''
+    Form object for generating custom sensor report
+    '''
     startDate = forms.DateField(label='Start Date', widget=forms.DateInput(attrs={'type':'date', 'class':'form-control',}))
     startTime = forms.TimeField(label='Start Time', widget=forms.TimeInput(attrs={'type':'time', 'class':'form-control',}))
     

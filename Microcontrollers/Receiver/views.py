@@ -13,6 +13,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='login.html')
 def report_list(request):
+    '''
+    Generates a list of Nodes and the report types (daily, weekly, etc.) available
+    @param request: the HTTP GET request
+    @return: rendered report_list.html with a list of Node objects
+    '''
     nodes = Node.objects.all()
     return render(request, 'report_list.html',
                   {'nodes': nodes }
@@ -22,7 +27,10 @@ def report_list(request):
 def daily_report(request, nodeid = None):
     '''
     Return all records from today.
-    @param request: the GET request sent by the server
+    @param request: the HTTP GET request
+    @param nodeid: the Node UUID to generate the report with. Default is None.
+    @return: rendered report.html containing a list comprised of Node objects and that Node's
+    Sensor values recorded over the past 24 hours
     '''
     timeFormat = "%Y-%m-%d %H:%M:%S"
     
@@ -60,7 +68,10 @@ def daily_report(request, nodeid = None):
 def weekly_report(request, nodeid = None):
     '''
     Return all records from the past week.
-    @param request: the GET request sent by the server
+    @param request: the HTTP GET request
+    @param nodeid: the Node UUID to generate the report with. Default is None.
+    @return: rendered report.html containing a list comprised of Node objects and that Node's
+    Sensor values recorded over the past 7 days
     '''
     timeFormat = "%Y-%m-%d %H:%M:%S"
     
@@ -98,7 +109,10 @@ def weekly_report(request, nodeid = None):
 def monthly_report(request, nodeid = None):
     '''
     Return all records from the past month.
-    @param request: the GET request sent by the server
+    @param request: the HTTP GET request
+    @param nodeid: the Node UUID to generate the report with. Default is None.
+    @return: rendered report.html containing a list comprised of Node objects and that Node's
+    Sensor values recorded over the past 31 days
     '''
     timeFormat = "%Y-%m-%d %H:%M:%S"
     
@@ -136,7 +150,10 @@ def monthly_report(request, nodeid = None):
 def yearly_report(request, nodeid = None):
     '''
     Return all records from the past year.
-    @param request: the GET request sent by the server
+    @param request: the HTTP GET request
+    @param nodeid: the Node UUID to generate the report with. Default is None.
+    @return: rendered report.html containing a list comprised of Node objects and that Node's
+    Sensor values recorded over the past 365 days
     '''
     timeFormat = "%Y-%m-%d %H:%M:%S"
     
@@ -172,6 +189,13 @@ def yearly_report(request, nodeid = None):
 
 @login_required(login_url='login.html')
 def custom_form(request, invalid = None, nodeid = None):
+    '''
+    Returns a form used to generate a custom report
+    @param request: the HTTP GET request
+    @param invalid: Boolean value indicating whether the start and end datetime ranges are valid
+    @param nodeid: the Node UUID to generate the report with. Default is None.
+    @return: rendered custom.html containing a CustomReport form model. Returns an invalid flag if there were errors.
+    '''
     if request.method == 'GET':
         form = CustomReport()
         
@@ -189,6 +213,12 @@ def custom_form(request, invalid = None, nodeid = None):
 
 @login_required(login_url='login.html')
 def custom_report(request):
+    '''
+    Returns the custom report requested by the user
+    @param request: the HTTP GET request
+    @return: rendered report.html containing a list comprised of Node objects and that Node's
+    Sensor values recorded over the requested time period 
+    '''
     # Retrieve dates and times from request
     startDate = request.GET['startDate']
     startTime = request.GET['startTime']
@@ -261,7 +291,9 @@ def custom_report(request):
 @login_required(login_url='login.html')
 def overview(request):
     '''
-    Return all records for all nodes
+    Return the 20 most recent Records recorded for all Nodes and Sensors
+    @param request: the HTTP GET request
+    @return: rendered overview.html containing the Node objects and Records
     '''    
     # Get all node objects
     nodes = Node.objects.all()
@@ -278,7 +310,9 @@ def overview(request):
 @login_required(login_url='login.html')
 def node_list(request):
     '''
-    Return a list of all nodes
+    Return a list of all Node objects
+    @param request: the HTTP GET request
+    @return: rendered node_list.html containing all Node objects, their Sensors, and their Actions
     '''
     nodes = Node.objects.all()    
     
@@ -296,8 +330,12 @@ def node_list(request):
 def node_status(request, nodeid):
     '''
     Return whether the given node is online
+    TODO: Implement
+    @param request: the HTTP GET request
+    @param nodeid: the Node UUID to check
+    @return: rendered node_status.html containing the Node and its online status
     '''
-	# Commented out "Test" button behavior for now
+    # Commented out "Test" button behavior for now
     # Capture management command return from stdout
     #out = StringIO()
     #call_command('get_node_status', nodeid, stdout=out)
