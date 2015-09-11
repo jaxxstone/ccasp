@@ -39,7 +39,7 @@ def daily_report(request, nodeid=None):
     else:
         nodes = Node.objects.all()
 
-    my_my_node_list = []
+    my_node_list = []
     for node in nodes:
         records = node.get_records_for_today()
         values = []
@@ -55,11 +55,11 @@ def daily_report(request, nodeid=None):
             # Highcharts requires [time, value] format for datetime graph
             values.append([my_time, record.value])
         # Add node and sensor values list to main list
-        my_my_node_list.append([node.node_id, values])
+        my_node_list.append([node.node_id, values])
 
     return render(request, 'report.html',
                   {'request': request,
-                   'my_my_node_list': my_my_node_list,
+                   'my_node_list': my_node_list,
                    'type': 'Daily',})
 
 @login_required(login_url='login.html')
@@ -97,7 +97,7 @@ def weekly_report(request, nodeid=None):
 
     return render(request, 'report.html',
                   {'request': request,
-                   'my_node_list': my_node_list,
+                   'node_list': my_node_list,
                    'type': 'Weekly',})
 
 @login_required(login_url='login.html')
@@ -135,7 +135,7 @@ def monthly_report(request, nodeid=None):
 
     return render(request, 'report.html',
                   {'request': request,
-                   'my_node_list': my_node_list,
+                   'node_list': my_node_list,
                    'type': 'Monthly',})
 
 @login_required(login_url='login.html')
@@ -173,7 +173,7 @@ def yearly_report(request, nodeid=None):
 
     return render(request, 'report.html',
                   {'request': request,
-                   'my_node_list': my_node_list,
+                   'node_list': my_node_list,
                    'type': 'Yearly',})
 
 @login_required(login_url='login.html')
@@ -269,7 +269,7 @@ def custom_report(request):
 
     return render(request, 'report.html',
                   {'request': request,
-                   'my_node_list': my_node_list,
+                   'node_list': my_node_list,
                    'type': 'Custom Range',
                    'min': json.dumps(start),
                    'max': end,})
