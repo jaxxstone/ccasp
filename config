@@ -5,13 +5,13 @@ name: Cloud Controlled Automation
 url: http://ccasp.elasticbeanstalk.com/
 
 # The list of modules to document.  Modules can be named using
-# dotted names, module filenames, or package directory names.
-# This option may be repeated.
-modules: /home/rob/workspace/ccasp/bin/ccasp/Microcontrollers/Receiver, /home/rob/workspace/ccasp/bin/ccasp/Microcontrollers/Microcontrollers
+#     dotted names, module filenames, or package directory names.
+#     This option may be repeated.
+modules: Microcontrollers/Receiver/, Microcontrollers/Microcontrollers/
 
-# Write html output to the directory "apidocs"
+# Write html output to the directory "/static"
 output: html
-target: /home/rob/workspace/ccasp/bin/ccasp/docs/
+target: Microcontrollers/static/docs
 
 # Include all automatically generated graphs.  These graphs are
 # generated using Graphviz dot.
