@@ -95,6 +95,8 @@ class Record(models.Model):
     value = models.FloatField()
     # Node that returned this record
     node = models.ForeignKey(Node)
+    # Sensor that returned this record
+    sensor = models.ForeignKey('Sensor', null=True)
     # Time that the record was recorded
     time_recorded = models.DateTimeField(default=timezone.now)
 

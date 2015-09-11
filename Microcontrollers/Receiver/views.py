@@ -277,14 +277,14 @@ def custom_report(request):
 @login_required(login_url='login.html')
 def overview(request):
     '''
-    Return the 20 most recent Records recorded for all Nodes and Sensors
+    Return the 100 most recent Records recorded for all Nodes and Sensors
     @param request: the HTTP GET request
     @return: rendered overview.html containing the Node objects and Records
     '''
     # Get all node objects
     nodes = Node.objects.all()
     # out will hold list of records for each node
-    out = Record.objects.all().order_by('-time_recorded')[:20]
+    out = Record.objects.all().order_by('-time_recorded')[:100]
 
     # Return rendered template
     return render(request, 'overview.html',
