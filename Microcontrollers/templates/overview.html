@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load tz %}
+{% block content %}
+
+<div class="table-responsive">
+  <h1>Recent Activity</br>
+    <small>Shows the 20 Most Recent Updates</small>
+  </h1>   
+  <table class="table">
+    <thead>
+      <tr>
+	<th>#</th>
+	<th>Node</th>
+	<th>Value</th>
+	<th>Date/Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% timezone "America/New_York" %}
+      {% for record in records %}
+      <tr>
+	<td>{{ forloop.counter }}</td>
+	<td>{{ record.node }}</td>
+	<td>{{ record.value }}</td>
+	<td>{{ record.time_recorded }}</td>
+      </tr>
+      {% endfor %}
+      {% endtimezone %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

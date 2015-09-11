@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load tz %}
+{% block content %}
+
+<h1>Select an end-node and a report style to view</h1>
+<ul class="nav nav-tabs">
+  {% for node in nodes %}
+  <li class="dropdown">
+    {% if node.name %}
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ node.name }}<span class="caret"></span></a>
+    {% else %}
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ node }}<span class="caret"></span></a>
+    {% endif %}
+    <ul class="dropdown-menu">
+      <li><a href="{% url 'records:daily_report' node.node_id %}">Daily</a></li>
+      <li><a href="{% url 'records:weekly_report' node.node_id %}">Weekly</a></li>
+      <li><a href="{% url 'records:monthly_report' node.node_id %}">Monthly</a></li>
+      <li><a href="{% url 'records:yearly_report' node.node_id %}">Yearly</a></li>
+      <li><a href="{% url 'records:custom_form' node.node_id %}">Custom</a></li>
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock content %}

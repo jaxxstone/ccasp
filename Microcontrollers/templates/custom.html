@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load tz %}
+{% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+  ( function($) {
+  // we can now rely on $ within the safety of our "bodyguard" function
+  $(document).ready( function() {
+  var x = new Date();
+  x = x.getTimezoneOffset();
+  $('#id_tzOffset').val(x);
+  } 
+  );
+  } ) ( jQuery );
+
+  function valid() {
+  var error = "";
+  if (document.getElementById('id_startDate').value == "")
+  {
+  document.getElementById('label_id_startDate').style.color = "red";
+  error += "Start date cannot be null<br>";
+  }
+  if (document.getElementById('id_startTime').value == "")
+  {
+  document.getElementById('label_id_startTime').style.color = 'red';
+  error += "Start time cannot be null<br>";
+  }
+  if (document.getElementById('id_endDate').value == "")
+  {
+  document.getElementById('label_id_endDate').style.color = 'red';
+  error += "End date cannot be null<br>";
+  }
+  if (document.getElementById('id_endTime').value == "")
+  {
+  document.getElementById('label_id_endTime').style.color = 'red';
+  error += "End time cannot be null<br>";
+  }
+  document.getElementById('error_message').innerHTML = "";
+  if (error.length > 0)
+  {
+  document.getElementById('error_message').innerHTML = error;
+  return false;
+  }
+  return true;
+  }
+</script>
+
+{% block form %}
+<form class="form-horizontal" role="form" method="GET" action="{% url 'records:custom_report' %}" >
+  <h1>Create a custom report<br>
+    <small>Select the date and time range to retrieve the data</small><br>
+  </h1>
+  {% if error %}
+  <h2>
+    <small style="color:red;" id="error_message">End date and time cannot be less than start date and time</small><br>
+  </h2>
+  {% else %}
+  <h2>
+    <small style="color:red;" id="error_message"></small><br>
+  </h2>
+  {% endif %}
+  {% csrf_token %}
+  <div class="form-group"> 
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="id_startDate" id="label_id_startDate">Start Date:</label>
+      <div class="col-sm-2">
+	{{ form.startDate }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="id_startTime" id="label_id_startTime">Start Time:</label>
+      <div class="col-sm-2">
+	{{ form.startTime }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="id_endDate" id="label_id_endDate">End Date:</label>
+      <div class="col-sm-2"> 
+	{{ form.endDate }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="id_endTime" id="label_id_endTime">End Time:</label>
+      <div class="col-sm-2">
+	{{ form.endTime }}
+      </div>
+    </div>
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default" onclick="return valid()">Submit</button>
+    </div>
+    {{ form.tzOffset }}
+  </div>
+</form>
+{% endblock %}
+{% endblock content %}

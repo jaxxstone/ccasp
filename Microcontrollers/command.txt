@@ -1,0 +1,4 @@
+# This was required for executing the read_data.py script
+# Not 100% sure why it's required to be honest
+# But copy and paste in Terminal before running
+export DJANGO_SETTINGS_MODULE=Microcontrollers.settings
