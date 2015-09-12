@@ -60,25 +60,26 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class Node</h1><p class="nomargin-top"><span class="codelink"><a href="Receiver.models-pysrc.html#Node">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_receiver_9" name="uml_class_diagram_for_receiver_9">
-<area shape="rect" id="node1_12" href="Receiver.models.Node-class.html#node_id" title="Receiver.models.Node.node_id" alt="" coords="18,30,257,50"/>
-<area shape="rect" id="node1_13" href="Receiver.models.Node-class.html#date_added" title="Receiver.models.Node.date_added" alt="" coords="18,50,257,70"/>
-<area shape="rect" id="node1_14" href="Receiver.models.Node-class.html#name" title="Receiver.models.Node.name" alt="" coords="18,70,257,90"/>
-<area shape="rect" id="node1_15" href="Receiver.models.Node-class.html#get_neighbors" title="Receiver.models.Node.get_neighbors" alt="" coords="18,93,257,113"/>
-<area shape="rect" id="node1_16" href="Receiver.models.Node-class.html#__str__" title="Receiver.models.Node.__str__" alt="" coords="18,113,257,133"/>
-<area shape="rect" id="node1_17" href="Receiver.models.Node-class.html#get_records" title="Receiver.models.Node.get_records" alt="" coords="18,133,257,153"/>
-<area shape="rect" id="node1_18" href="Receiver.models.Node-class.html#get_most_recent" title="Receiver.models.Node.get_most_recent" alt="" coords="18,153,257,173"/>
-<area shape="rect" id="node1_19" href="Receiver.models.Node-class.html#get_records_for_today" title="Return records from the past 24 hours" alt="" coords="18,173,257,193"/>
-<area shape="rect" id="node1_20" href="Receiver.models.Node-class.html#get_records_for_week" title="Return records from the past 7 days" alt="" coords="18,193,257,213"/>
-<area shape="rect" id="node1_21" href="Receiver.models.Node-class.html#get_records_for_month" title="Return records from the past 7 days" alt="" coords="18,213,257,233"/>
-<area shape="rect" id="node1_22" href="Receiver.models.Node-class.html#get_records_for_year" title="Return records from the past 7 days" alt="" coords="18,233,257,253"/>
-<area shape="rect" id="node1_23" href="Receiver.models.Node-class.html#get_records_for_custom" title="Return records from custom date range" alt="" coords="18,253,257,273"/>
-<area shape="rect" id="node1" href="Receiver.models.Node-class.html" title="Receiver.models.Node" alt="" coords="5,5,268,279"/>
+<center>  <map id="uml_class_diagram_for_receiver_8" name="uml_class_diagram_for_receiver_8">
+<area shape="rect" id="node1_11" href="Receiver.models.Node-class.html#node_id" title="Receiver.models.Node.node_id" alt="" coords="18,29,257,49"/>
+<area shape="rect" id="node1_12" href="Receiver.models.Node-class.html#date_added" title="Receiver.models.Node.date_added" alt="" coords="18,49,257,69"/>
+<area shape="rect" id="node1_13" href="Receiver.models.Node-class.html#name" title="Receiver.models.Node.name" alt="" coords="18,69,257,89"/>
+<area shape="rect" id="node1_14" href="Receiver.models.Node-class.html#__str__" title="Override default string behavior" alt="" coords="18,92,257,112"/>
+<area shape="rect" id="node1_15" href="Receiver.models.Node-class.html#get_records" title="Returns all Record objects associated with the node" alt="" coords="18,112,257,132"/>
+<area shape="rect" id="node1_16" href="Receiver.models.Node-class.html#get_most_recent" title="Returns 20 most recent Record objects" alt="" coords="18,132,257,152"/>
+<area shape="rect" id="node1_17" href="Receiver.models.Node-class.html#get_records_for_today" title="Return records from the past 24 hours" alt="" coords="18,152,257,172"/>
+<area shape="rect" id="node1_18" href="Receiver.models.Node-class.html#get_records_for_week" title="Return records from the past 7 days" alt="" coords="18,172,257,192"/>
+<area shape="rect" id="node1_19" href="Receiver.models.Node-class.html#get_records_for_month" title="Return records from the past 31 days" alt="" coords="18,192,257,212"/>
+<area shape="rect" id="node1_20" href="Receiver.models.Node-class.html#get_records_for_year" title="Return records from the past 365 days" alt="" coords="18,212,257,232"/>
+<area shape="rect" id="node1_21" href="Receiver.models.Node-class.html#get_records_for_custom" title="Return records from custom date range" alt="" coords="18,232,257,252"/>
+<area shape="rect" id="node1" href="Receiver.models.Node-class.html" title="Node model represents an end node" alt="" coords="5,5,268,259"/>
 </map>
-  <img src="uml_class_diagram_for_receiver_9.gif" alt='' usemap="#uml_class_diagram_for_receiver_9" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_receiver_8.gif" alt='' usemap="#uml_class_diagram_for_receiver_8" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
+<p>Node model represents an end node</p>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -102,23 +103,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_neighbors"></a><span class="summary-sig-name">get_neighbors</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_neighbors">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="__str__"></a><span class="summary-sig-name">__str__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="__str__"></a><span class="summary-sig-name">__str__</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Override default string behavior</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.__str__">source&nbsp;code</a></span>
             
@@ -134,7 +120,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_records"></a><span class="summary-sig-name">get_records</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="Receiver.models.Node-class.html#get_records" class="summary-sig-name">get_records</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns all Record objects associated with the node</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records">source&nbsp;code</a></span>
             
@@ -150,7 +137,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_most_recent"></a><span class="summary-sig-name">get_most_recent</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="Receiver.models.Node-class.html#get_most_recent" class="summary-sig-name">get_most_recent</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns 20 most recent Record objects</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_most_recent">source&nbsp;code</a></span>
             
@@ -166,7 +154,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_records_for_today"></a><span class="summary-sig-name">get_records_for_today</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="Receiver.models.Node-class.html#get_records_for_today" class="summary-sig-name">get_records_for_today</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Return records from the past 24 hours</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_today">source&nbsp;code</a></span>
@@ -183,7 +171,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_records_for_week"></a><span class="summary-sig-name">get_records_for_week</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="Receiver.models.Node-class.html#get_records_for_week" class="summary-sig-name">get_records_for_week</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Return records from the past 7 days</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_week">source&nbsp;code</a></span>
@@ -200,8 +188,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_records_for_month"></a><span class="summary-sig-name">get_records_for_month</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return records from the past 7 days</td>
+          <td><span class="summary-sig"><a href="Receiver.models.Node-class.html#get_records_for_month" class="summary-sig-name">get_records_for_month</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return records from the past 31 days</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_month">source&nbsp;code</a></span>
             
@@ -217,8 +205,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_records_for_year"></a><span class="summary-sig-name">get_records_for_year</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return records from the past 7 days</td>
+          <td><span class="summary-sig"><a href="Receiver.models.Node-class.html#get_records_for_year" class="summary-sig-name">get_records_for_year</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return records from the past 365 days</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_year">source&nbsp;code</a></span>
             
@@ -305,6 +293,136 @@
   </td>
 </tr>
 </table>
+<a name="get_records"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_records</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns all Record objects associated with the node</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a list of Record objects associated with the node</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_most_recent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_most_recent</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_most_recent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns 20 most recent Record objects</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a list of Record objects</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_records_for_today"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_records_for_today</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_today">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return records from the past 24 hours</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a list of Record objects for this node recorded in the past 24 
+          hours</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_records_for_week"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_records_for_week</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_week">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return records from the past 7 days</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a list of Record objects for this node recorded in the past 7 
+          days</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_records_for_month"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_records_for_month</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_month">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return records from the past 31 days</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a list of Record objects for this node recorded in the past 31 
+          days</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_records_for_year"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_records_for_year</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="Receiver.models-pysrc.html#Node.get_records_for_year">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return records from the past 365 days</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a list of Record objects for this node recorded in the past 365 
+          days</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="get_records_for_custom"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -328,6 +446,9 @@
         <li><strong class="pname"><code>start</code></strong> - the starting datetime</li>
         <li><strong class="pname"><code>end</code></strong> - the ending datetime</li>
     </ul></dd>
+    <dt>Returns:</dt>
+        <dd>a list of Record objects for this node recorded in the specified 
+          time period</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -360,7 +481,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 11 00:03:23 2015
+    Generated by Epydoc 3.0.1 on Fri Sep 11 21:19:16 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

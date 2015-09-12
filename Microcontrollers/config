@@ -7,11 +7,11 @@ url: http://ccasp.elasticbeanstalk.com/
 # The list of modules to document.  Modules can be named using
 #     dotted names, module filenames, or package directory names.
 #     This option may be repeated.
-modules: Microcontrollers/Receiver/, Microcontrollers/Microcontrollers/
+modules: Receiver/, Microcontrollers/
 
 # Write html output to the directory "/static"
 output: html
-target: Microcontrollers/static/docs
+target: static/docs
 
 # Include all automatically generated graphs.  These graphs are
 # generated using Graphviz dot.
