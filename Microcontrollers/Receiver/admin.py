@@ -3,7 +3,7 @@ the Microcontrollers application.'''
 # pylint: disable=too-many-public-methods, no-value-for-parameter, no-member
 
 from django.contrib import admin
-from Receiver.models import Node, Record, Sensor
+from Receiver.models import Node, Record, Sensor, Action
 
 class RecordInline(admin.TabularInline):
     '''
@@ -32,13 +32,21 @@ class SensorInline(admin.TabularInline):
         else:
             return True
 
+class ActionInline(admin.TabularInline):
+    '''
+    Admin panel inline view for Action objects
+    @param admin.TabularInline: Django template for inline views
+    '''
+    model = Action
+    extra = 0
+
 class NodeAdmin(admin.ModelAdmin):
     '''
     Admin panel model view for Node objects
     @param admin.ModelAdmin: Django template for model views
     '''
     model = Node
-    inlines = [SensorInline]
+    inlines = [SensorInline, ActionInline]
     ordering = ('node_id',)
 
 admin.site.register(Node, NodeAdmin)

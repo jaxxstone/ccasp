@@ -140,7 +140,11 @@ class Action(models.Model):
     # User-provided name of the Action
     name = models.CharField(max_length=75, null=True)
     # Node associated with the Action
-    node = models.ForeignKey(Node)
+    node = models.ForeignKey(Node, null=True)
+    sensor = models.ForeignKey(Sensor, null=True)
+    datetime_to_execute = models.DateTimeField(auto_now=False,
+                                               auto_now_add=False,
+                                               null=True)
 
     def __str__(self):
         '''Override default string behavior'''

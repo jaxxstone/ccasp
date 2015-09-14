@@ -1,0 +1,4 @@
+libgraphviz-dev
+postresql-devel
+python-dev
+python-crontab
