@@ -59,7 +59,7 @@ def daily_report(request, nodeid=None):
 
     return render(request, 'report.html',
                   {'request': request,
-                   'my_node_list': my_node_list,
+                   'node_list': my_node_list,
                    'type': 'Daily',})
 
 @login_required(login_url='login.html')
