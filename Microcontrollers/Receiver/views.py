@@ -207,10 +207,10 @@ def custom_report(request):
     and that Node's Sensor values recorded over the requested time period
     '''
     # Retrieve dates and times from request
-    start_date = request.GET['start_date']
-    start_time = request.GET['start_time']
-    end_date = request.GET['end_date']
-    end_time = request.GET['end_time']
+    start_date = request.GET['startDate']
+    start_time = request.GET['startTime']
+    end_date = request.GET['endDate']
+    end_time = request.GET['endTime']
     offset = request.GET['tzOffset']
 
     # Convert offset minutes to ms
