@@ -8,28 +8,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import re
 from django.conf.global_settings import STATICFILES_FINDERS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'SEE DOCUMENTATION'
+SECRET_KEY = str(os.environ['DJANGO_SECRET_KEY'])
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+ALLOWED_HOSTS = ['*',]
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
-
-
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +33,7 @@ INSTALLED_APPS = (
     'Microcontrollers',
     'widget_tweaks',
     'storages',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,52 +73,49 @@ WSGI_APPLICATION = 'Microcontrollers.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'CHANGE ME',
-        'NAME': 'CHANGE ME',                      
-        'USER': 'CHANGE ME',
-        'PASSWORD': 'CHANGE ME',
-        'HOST': 'CHANGE ME',
-        'PORT': 'CHANGE ME',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'microcontrollers',                      
+        'USER': str(os.environ['AWS_USER']),
+        'PASSWORD': str(os.environ['AWS_PWD']),
+        'HOST': str(os.environ['AWS_HOST']),
+        'PORT': str(os.environ['AWS_PORT']),
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-                    os.path.join(BASE_DIR, 'static'),
-                    ]
-
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
-    os.path.join(BASE_DIR)
-)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),
+                 os.path.join(BASE_DIR))
 
 LOGIN_REDIRECT_URL = 'records/'
 LOGIN_URL = 'django.contrib.auth.views.login'
 
-TTY_PORT = '/dev/ttyACM2'
+_tty_dir = os.listdir('/dev/')
+_tty_port = ''
+for tty in _tty_dir:
+    if re.match('ttyACM*', tty):
+        _tty_port = '/dev/'+tty
+
+if _tty_port == '':
+    _tty_port == '/dev/ttyACM0'
+
+TTY_PORT = str(_tty_port)
 
 #http://djangotricks.blogspot.com/2013/12/how-to-store-your-media-files-in-amazon.html
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_S3_SECURE_URLS = False
 AWS_QUERYSTRING_AUTH = False
-AWS_ACCESS_KEY_ID = 'CHANGE ME'
-AWS_SECRET_ACCESS_KEY = 'CHANGE ME'
-AWS_STORAGE_BUCKET_NAME = 'CHANGE ME'
+AWS_ACCESS_KEY_ID = str(os.environ['AWS_ACCESS_KEY']),
+AWS_SECRET_ACCESS_KEY = str(os.environ['AWS_SECRET_KEY']),
+AWS_STORAGE_BUCKET_NAME = 'microcontrollersstatic'
