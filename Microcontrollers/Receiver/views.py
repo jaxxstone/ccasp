@@ -300,7 +300,7 @@ def node_list(request):
     @return: rendered my_node_list.html containing all Node objects,
     their Sensors, and their Actions
     '''
-    nodes = Node.objects.all()
+    nodes = Node.objects.all().order_by('node_id')
 
     out = []
     for node in nodes:
