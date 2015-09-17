@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load tz %}
+{% block content %}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+	var date = new Date();
+	$(function () {
+		Highcharts.setOptions({
+	        global: {
+	            useUTC: false,
+	        }
+	    });
+		
+		
+	    $('#container').highcharts({
+	    	chart: {
+	    		zoomType: 'xy',
+	    		defaultSeriesType: 'line',
+	    	},
+	    	title: {
+	            text: '{{ type }} Temperature Values',
+	            x: -20 //center
+	        },
+	        subtitle: {
+	            text: 'CRAMP',
+	            x: -20
+	        },
+	        xAxis: {
+	            type: 'datetime',
+	            dateTimeLabelFormats: { // don't display the dummy year
+	                month: '%e. %b',
+	                year: '%b',
+	                hour: '%I:%M%p'
+	            },
+	            title: 'Time', 
+	            {% if type == 'Daily' %}
+		            min: new Date().setHours(0, 0, 0, 0),
+		            max: new Date().getTime(),//.setHours(24, 0, 0, 0),
+		            
+		        {% elif type == 'Weekly' %}
+		            min: date.setDate(date.getDate() - 7),
+		            max: new Date().getTime(),//.setHours(24, 0, 0, 0),
+		            
+	            {% elif type == 'Monthly' %}
+			        min: date.setDate(date.getDate() - 31),
+		            max: new Date().getTime(),//.setHours(24, 0, 0, 0),
+		        
+		        {% elif type == 'Custom Range' %}
+	            	min: new Date().setTime({{ min }} ),
+	            	max: new Date().setTime( {{ max }} ),
+	            	
+	            {% else %}
+		            min: date.setDate(date.getDate() - 365),
+		            max: new Date().setHours(24, 0, 0, 0),
+		            
+	            {% endif %}
+	        },
+	        yAxis: {
+	            title: {
+	                text: 'Temperature (°F)'
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        tooltip: {
+	            valueSuffix: '°F'
+	        },
+	        legend: {
+	            layout: 'horizontal',
+	            align: 'center',
+	            verticalAlign: 'bottom',
+	            borderWidth: 0,
+	            labelFormatter: function () {
+	                return 'Sensor ' + this.name + ' (click to show/hide)';
+	            }, 
+	            title: {
+	                text: 'Active Sensors',
+	                style: {
+	                    fontStyle: 'italic'
+	                }
+	            },
+	        },
+	        credits: {
+	            enabled: false
+	        },
+	        series: [
+				{% for node in node_list %}
+		        {
+		            name: '{{ node.0 }}',
+		            data: {{ node.1|safe }},
+		        },
+		        {% endfor %}
+	        ]
+	    });
+	});
+	
+	function convertToLocal(time)
+	{
+		alert("hi");
+		var newDate = new Date(0);
+		alert("hi2");
+		newDate.setUTCSeconds(time);
+		alert("");
+		alert(time);
+		alert(newDate);
+		return newDate;
+	}
+	</script>
+	
+	<div id="container" style="min-width: 310px;margin: 0px auto"></div>
+{% endblock content %}

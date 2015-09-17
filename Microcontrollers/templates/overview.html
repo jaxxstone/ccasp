@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
+{% block content %}
+<script src="{% static 'js/searchable.js' %}" type="text/javascript"></script>
+<div class="table-responsive">
+  <h1>Recent Activity</br>
+    <small>Shows the {{ records|length }}  Most Recent Updates</small>
+  </h1>
+  <div class="input-group"> <span class="input-group-addon">Filter</span>
+    <input id="filter" type="text" class="form-control" placeholder="Search">
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>#</th>
+	<th>Node</th>
+	<th>Sensor</th>
+	<th>Value</th>
+	<th>Date/Time</th>
+      </tr>
+    </thead>
+    <tbody class="searchable">
+      {% timezone "America/New_York" %}
+      {% for record in records %}
+      <tr>
+	<td>{{ forloop.counter }}</td>
+	<td>{% if record.node.name %}{{ record.node.name }}{% else %}{{ record.node }}{% endif %}</td>
+	<td>{% if record.sensor.name %}{{ record.sensor.name }}{% else %}{{ record.sensor }}{% endif %}</td>
+	<td>{{ record.value }}</td>
+	<td>{{ record.time_recorded }}</td>
+      </tr>
+      {% endfor %}
+      {% endtimezone %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

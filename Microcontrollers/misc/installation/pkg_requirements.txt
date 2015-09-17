@@ -1,0 +1,8 @@
+libgraphviz-dev
+postresql-devel
+python-dev
+python-crontab
+
+Raspberry Pi:
+	Postgresql:
+		http://raspberrypg.org/2015/06/step-5-update-installing-postgresql-on-my-raspberry-pi-1-and-2/

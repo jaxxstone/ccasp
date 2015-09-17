@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="row">
+  {% for node in nodes %}
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="{% static 'images/nano_small.png' %}" alt="Arduino Nano placeholder image">
+      <div class="caption">
+	<div class="panel panel-primary">
+	  <div class="btn-group btn-group-justified" role="group" aria-label="Reports button group with nested dropdown">
+	    <div class="btn-group" role="group">
+              <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false" data-ytta-id="-" style="text-align:left;">
+		<h3 class="panel-title">Reports</h3><span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+		<li><a href="{% url 'records:daily_report' node.0.node_id %}">Daily</a></li>
+		<li><a href="{% url 'records:weekly_report' node.0.node_id %}">Weekly</a></li>
+		<li><a href="{% url 'records:monthly_report' node.0.node_id %}">Monthly</a></li>
+		<li><a href="{% url 'records:yearly_report' node.0.node_id %}">Yearly</a></li>
+		<li><a href="{% url 'records:custom_form' node.0.node_id %}">Custom</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	  <p></p>
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+              {% if node.0.name %}{{ node.0.name }} Sensors{% else %}{{ node.0 }} Sensors{% endif %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+            <ul class="list-group">
+              {% for sensor in node.1 %}
+              <li class="list-group-item">{{ sensor }} &nbsp;</li>
+              {% endfor %}
+              {% if node.1|length == 1 %}
+	      <!-- This is so ugly, but boxes are uglier if they
+		   don't have 5 items each
+		   TODO: refactor listing logic
+		-->
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              {% elif node.1|length == 2%}
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              {% elif node.1|length == 3%}
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              {% elif node.1|length == 4%}
+              <li class="list-group-item">&nbsp;</li>
+              {% endif %}
+              
+              {% if not node.1 %}
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              <li class="list-group-item">&nbsp;</li>
+              {% endif %}
+	    </ul>
+	  </div>
+	</div>
+        <div class="btn-group">
+          <a href="{% url 'records:node_status' node.0.node_id %}" class="btn btn-primary" role="button">Test Node</a>
+          {% if node.2 %}
+	  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Actions<span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu">
+	    {% for action in node.2 %}
+	    <li><a href="#">{{ action.name }}</a></li>
+	    {% endfor %}
+	  </ul>
+	  {% endif %}
+	</div>       
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}
