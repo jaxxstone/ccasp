@@ -146,6 +146,13 @@ class Action(models.Model):
                                                auto_now_add=False,
                                                null=True)
 
+    recurrence_choices = (('Daily', 'Daily'),
+                          ('Weekly', 'Weekly'),
+                          ('Monthly', 'Monthly'))
+    recurrence_textbox = models.CharField(max_length=255,
+                                          choices=recurrence_choices,
+                                          default='Daily')
+
     def __str__(self):
         '''Override default string behavior'''
         return "Node " + str(self.node.node_id) + ": " + str(self.name)
