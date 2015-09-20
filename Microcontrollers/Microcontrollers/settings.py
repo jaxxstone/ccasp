@@ -93,7 +93,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),
                  os.path.join(BASE_DIR))
 
@@ -116,6 +116,6 @@ STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_S3_SECURE_URLS = False
 AWS_QUERYSTRING_AUTH = False
-AWS_ACCESS_KEY_ID = str(os.environ['AWS_ACCESS_KEY']),
-AWS_SECRET_ACCESS_KEY = str(os.environ['AWS_SECRET_KEY']),
+AWS_ACCESS_KEY_ID = str(os.environ['AWS_ACCESS_KEY'])
+AWS_SECRET_ACCESS_KEY = str(os.environ['AWS_SECRET_KEY'])
 AWS_STORAGE_BUCKET_NAME = 'microcontrollersstatic'
