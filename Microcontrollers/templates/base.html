@@ -36,6 +36,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'records:overview' %}">Overview</a></li>
             <li><a href="{% url 'records:node_list' %}">Nodes</a></li>
+	    <li><a href="{% url 'records:actions' %}">Actions</a></li>
             <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
           </ul>
         </div>
@@ -52,6 +53,7 @@
           <ul class="nav nav-sidebar">
 	    <li><a href="{% url 'records:overview' %}" data-ytta-id="-">Overview</a></li>
 	    <li><a href="{% url 'records:node_list' %}" data-ytta-id="-">Nodes</a></li>
+	    <li><a href="{% url 'records:actions' %}" data-ytta-id="-">Actions</a></li>
 	    <li><a href="#" data-ytta-id="-">Sensors</a></li>
           </ul>
         </div>

@@ -6,20 +6,21 @@
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Daemon process to read data from Arduino and upload to AWS RDS
+# Short-Description: Read data from AWS RDS and do something
 # Description:       http://blog.scphillips.com/posts/2013/07/getting-a-python-script-to-run-in-the-background-as-a-service-on-boot/
 ### END INIT INFO
 
-# Path to script
+# Change the next 3 lines to suit where you install your script and what you want to call it
 DIR=/home/pi/ccasp/Microcontrollers
 DAEMON=$DIR/read_data.py
 DAEMON_NAME=read_data
 
-# Command line options
+# Add any command line options for your daemon here
 DAEMON_OPTS=""
 
-# What user the script runs as
-DAEMON_USER=root
+# This next line determines what user the script runs as.
+# Root generally not recommended but necessary if you are using the Raspberry Pi GPIO from Python.
+DAEMON_USER=pi
 
 # The process ID of the script when it runs is stored here:
 PIDFILE=/var/run/$DAEMON_NAME.pid
@@ -27,7 +28,9 @@ PIDFILE=/var/run/$DAEMON_NAME.pid
 . /lib/lsb/init-functions
 
 do_start () {
-    log_daemon_msg "Starting system $DAEMON_NAME daemon"
+    log_daemon_msg "Starting system $DAEMON_NAME daemon as user $DAEMON_USER"
+    # Iterate over exports in read_data and add to os.environ for root
+    [ -f /etc/default/read_data ] && . /etc/default/read_data
     start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
     log_end_msg $?
 }
