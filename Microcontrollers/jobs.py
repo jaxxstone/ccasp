@@ -40,9 +40,7 @@ def schedule_job():
                     # Try to create a new job
                     try:
                         cron.remove_all(comment=str(job_id))
-                        new_job = cron.new(command='python /home/rob/workspace/'
-                                           'ccasp/bin/ccasp/Microcontrollers/'
-                                           'jobs.py execute %s %s %s' %
+                        new_job = cron.new(command='python /home/pi/ccasp/Microcontrollers/jobs.py execute %s %s %s' %
                                            (node_id, sensor_id, job_id),
                                            comment=str(job_id))
                         
@@ -94,8 +92,7 @@ def execute_job(node_id, sensor_id, job_id):
     # Set up logging
     import logging
     logging.basicConfig(filename=
-                        '/home/pi/ccasp/Microcontrollers/Microcontrollers/'
-                        'jobs.txt', level=logging.INFO)
+                        '/home/pi/ccasp/Microcontrollers/jobs.txt', level=logging.INFO)
     
     logging.info('Starting execute job')
     if len(sys.argv) != 5:

@@ -2,9 +2,10 @@
 received by the cron job and add it to the database'''
 # pylint: disable=no-value-for-parameter, no-member
 
-from Receiver.models import Node, Record
+from Receiver.models import CompletedAction, Action
 from django.core.management.base import BaseCommand
-
+import traceback
+from datetime import datetime as dt
 class Command(BaseCommand):
     '''Default class for Django's management commands'''
     help = "adds a new CompletedAction to the database"
@@ -18,14 +19,14 @@ class Command(BaseCommand):
 
         # Create CompletedAction object
         completed_action = CompletedAction()
-        
         # Retrieve Action object matching job ID
         try:
             action = Action.objects.get(pk=job_id)
             completed_action.action = action
+            completed_action.status = True
         except:
             completed_action.action = None
+            completed_action.status = False
 
-        completed_action.status = True
         completed_action.time = dt.now()
         completed_action.save()
