@@ -13,12 +13,27 @@ class RecordInline(admin.TabularInline):
     model = Record
     extra = 0
 
+class ActionInline(admin.TabularInline):
+    '''
+    Admin panel inline view for Action objects
+    @param admin.TabularInline: Django template for inline views
+    '''
+    model = Action
+    extra = 0
+
+class SensorAdmin(admin.ModelAdmin):
+    model = Sensor
+    extra = 0
+    ordering = ('node',)
+    inlines = [ActionInline,]
+
 class SensorInline(admin.TabularInline):
     '''
     Admin panel inline view for Sensor objects
     @param admin.TabularInline: Django template for inline views
     '''
     model = Sensor
+    inlines = [ActionInline,]
     extra = 0
 
     def has_add_permission(self, request):
@@ -32,21 +47,14 @@ class SensorInline(admin.TabularInline):
         else:
             return True
 
-class ActionInline(admin.TabularInline):
-    '''
-    Admin panel inline view for Action objects
-    @param admin.TabularInline: Django template for inline views
-    '''
-    model = Action
-    extra = 0
-
 class NodeAdmin(admin.ModelAdmin):
     '''
     Admin panel model view for Node objects
     @param admin.ModelAdmin: Django template for model views
     '''
     model = Node
-    inlines = [SensorInline, ActionInline]
+    inlines = [SensorInline,]
     ordering = ('node_id',)
 
 admin.site.register(Node, NodeAdmin)
+admin.site.register(Sensor, SensorAdmin)

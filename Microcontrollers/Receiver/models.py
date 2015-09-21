@@ -18,7 +18,16 @@ class Node(models.Model):
 
     def __str__(self):
         '''Override default string behavior'''
-        return "Node " + str(self.node_id)
+        if self.name:
+            return "Node %s %s" % (self.node_id, self.name)
+        else:
+            return "Node %s" % self.node_id
+
+    def __unicode__(self):
+        if self.name:
+            return "Node %s %s" % (self.node_id, self.name)
+        else:
+            return "Node %s" % self.node_id
 
     def get_records(self):
         '''
@@ -146,13 +155,19 @@ class Action(models.Model):
                                                auto_now_add=False,
                                                null=True)
 
-    recurrence_choices = (('Daily', 'Daily'),
+    recurrence_choices = (('None', 'None'),
+                          ('Daily', 'Daily'),
                           ('Weekly', 'Weekly'),
                           ('Monthly', 'Monthly'))
     recurrence_textbox = models.CharField(max_length=255,
                                           choices=recurrence_choices,
-                                          default='Daily')
+                                          default='None')
 
     def __str__(self):
         '''Override default string behavior'''
-        return "Node " + str(self.node.node_id) + ": " + str(self.name)
+        return "Node " + str(self.node) + ": " + str(self.name)
+
+class CompletedAction(models.Model):
+    action = models.ForeignKey(Action)
+    status = models.BooleanField()
+    time = models.DateTimeField(auto_now=True)

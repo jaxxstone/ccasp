@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 '''Script to schedule cron job for user-provided actions https://pypi.python.org/pypi/python-crontab'''
 from crontab import CronTab, CronItem
+import os
 import sys
+import django
 from datetime import datetime as dt
 from read_db import retrieve_actions as rt
 
@@ -37,13 +39,28 @@ def schedule_job():
 
                     # Try to create a new job
                     try:
-                        #new_job = cron.new(command='echo "Test"', comment=str(job_id))
-                        new_job = cron.new(command='python /home/rob/workspace/ccasp/bin/ccasp/Microcontrollers/jobs.py execute %s %s' % (node_id, sensor_id), comment=str(job_id) + ' ' + str(recurrence))
+                        cron.remove_all(comment=str(job_id))
+                        new_job = cron.new(command='python /home/rob/workspace/'
+                                           'ccasp/bin/ccasp/Microcontrollers/'
+                                           'jobs.py execute %s %s %s' %
+                                           (node_id, sensor_id, job_id),
+                                           comment=str(job_id))
                         
                         # Try to set time for job
                         try:
-                            new_job.setall(dt.minute, dt.hour,
-                                           dt.day, dt.month, None)
+                            if recurrence == 'None':
+                                new_job.setall(dt.minute, dt.hour,
+                                               dt.day, dt.month, None)
+                            else:
+                                if recurrence == 'Daily':
+                                    new_job.setall(dt.minute, dt.hour,
+                                                   None, None, None)
+                                elif recurrence == 'Weekly':
+                                    new_job.setall(dt.minute, dt.hour,
+                                                   None, None, dt.weekday)
+                                elif recurrence == 'Monthly':
+                                    new_job.setall(dt.minute, dt.hour,
+                                                   dt.day, None, None)
                             # Try to write job
                             try:
                                 cron.write()
@@ -60,26 +77,39 @@ def schedule_job():
     except:
         print "Error retrieving actions"
 
-def execute_job(node_id, sensor_id):
+def execute_job(node_id, sensor_id, job_id):
     '''
     Attempt to execute job for given node and sensor
     @param node_id: the node
     @param sensor_id: the sensor
     '''
+    # Set environment for creating Django models
+    import django
+    from django.conf import settings
+    from django.core.management import call_command
+    sys.path.insert(1, '/home/pi/ccasp/Microcontrollers/Microcontrollers')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+    django.setup()
+    
+    # Set up logging
     import logging
-    logging.basicConfig(filename='/home/rob/workspace/ccasp/bin/ccasp/Microcontrollers/jobs.txt', level=logging.INFO)
-
-    if len(sys.argv) != 4:
-        print 'usage -- jobs.py execute node sensor'
+    logging.basicConfig(filename=
+                        '/home/pi/ccasp/Microcontrollers/Microcontrollers/'
+                        'jobs.txt', level=logging.INFO)
+    
+    logging.info('Starting execute job')
+    if len(sys.argv) != 5:
+        print 'usage -- jobs.py execute node sensor job'
         logging.info('Invalid sys.argv')
         sys.exit(1)
     
     try:
-        node_id = str(sys.argv[2])
-        sensor_id = str(sys.argv[3])
-        logging.info('Received job for node %s sensor %s' % (node_id, sensor_id))
+        logging.info('Received job for node %s sensor %s job %s' % (node_id, sensor_id, job_id))
+        cron = CronTab(user=True)
+        call_command('add_action', (job_id,))
+        logging.info('Saved job %s to database' % job_id)            
     except:
-        logging.info('Could not receive job')
+        logging.info('Could not save job %s to database' % job_id)
         
     # TODO Send message to Arduino Master over serial
     # Wait for return value 
@@ -89,10 +119,10 @@ if __name__ == '__main__':
         if sys.argv[1] == 'schedule':
             schedule_job()
         elif sys.argv[1] == 'execute':
-            if len(sys.argv) == 4:
-                execute_job(sys.argv[2], sys.argv[3])
+            if len(sys.argv) == 5:
+                execute_job(sys.argv[2], sys.argv[3], sys.argv[4])
             else:
-                print 'usage -- jobs.py execute node_id sensor_id'
+                print 'usage -- jobs.py execute node_id sensor_id job_id'
                 sys.exit(1)
         elif sys.argv[1] == 'retrieve':
             for job in retrieve_jobs():

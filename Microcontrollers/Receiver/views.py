@@ -339,3 +339,14 @@ def node_status(request, nodeid):
     return render(request, 'node_status.html',
                   {'status': online,
                    'node': node,})
+
+@login_required(login_url='actions.html')
+def get_actions(request):
+    '''
+    Return a list of scheduled actions
+    @param request: the HTTP GET request
+    @return: rendered actions.html containing a list of actions
+    '''
+    actions = Action.objects.all()
+    return render(request, 'actions.html',
+                  {'actions': actions,})
