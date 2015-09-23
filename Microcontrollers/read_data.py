@@ -62,9 +62,9 @@ while True:
     time.sleep(3)
     while ser.inWaiting() > 0:
 
-        # Read in node UUID
+        # Read in sensor UUID
         try:
-            node = ser.readline()
+            sensor = ser.readline()
             time.sleep(1)
         except:
             logger.info('Unable to read from serial')
@@ -76,7 +76,7 @@ while True:
             val = val.replace('\n', '')
             val = val.replace('\r', '')
             val = (float(val) * (9.0/5.0)) + 32.0
-            val = val - float(node) * 10
+            val = val - float(sensor) * 10
             val = str(val)
         except:
             logger.info('Unable to read values')
@@ -86,7 +86,7 @@ while True:
         # call_comment executes a Django management command found in
         # Receiver/management/commands
         try:
-            call_command('add_record', (node, val,))
+            call_command('add_record', (sensor, val,))
         except:
             logger.info('Unable to add record')
 

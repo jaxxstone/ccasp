@@ -151,10 +151,10 @@ class Action(models.Model):
     # Node associated with the Action
     node = models.ForeignKey(Node, null=True)
     sensor = models.ForeignKey(Sensor, null=True)
+
     datetime_to_execute = models.DateTimeField(auto_now=False,
                                                auto_now_add=False,
                                                null=True)
-
     recurrence_choices = (('None', 'None'),
                           ('Daily', 'Daily'),
                           ('Weekly', 'Weekly'),
@@ -162,6 +162,7 @@ class Action(models.Model):
     recurrence_textbox = models.CharField(max_length=255,
                                           choices=recurrence_choices,
                                           default='None')
+    
 
     def __str__(self):
         '''Override default string behavior'''

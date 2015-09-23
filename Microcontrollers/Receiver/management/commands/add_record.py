@@ -27,12 +27,13 @@ class Command(BaseCommand):
         # Create new record and add value
         new_record = Record()
         new_record.value = out
+        new_record.sensor = Sensor.objects.get(pk=node_id, node__node_id=1)
 
         # Try to match node to existing node
         # objects.get() raises DNE exception if not found
         # Catch and create and save new node with nodeID
         try:
-            new_record.node = Node.objects.get(pk=node_id)
+            new_record.node = Node.objects.get(pk=1)
         except:
             new_node = Node()
             new_node.node_id = node_id

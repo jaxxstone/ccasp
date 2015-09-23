@@ -2,7 +2,7 @@
 the 'records' namespace'''
 
 from django.conf.urls import url
-from Receiver.views import overview, daily_report, weekly_report, monthly_report, yearly_report, custom_form, custom_report, report_list, node_list, node_status, get_actions
+from Receiver.views import overview, daily_report, weekly_report, monthly_report, yearly_report, custom_form, custom_report, report_list, node_list, node_status, get_actions, get_recent_actions
 
 urlpatterns = [
     url(r'^$', overview, name='overview'),
@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'report_list/$', report_list, name='report_list'),
     url(r'node_list/$', node_list, name='node_list'),
     url(r'node_status/([0-9]*)?$', node_status, name='node_status'),
-    url(r'actions/$', get_actions, name='actions'),
+    url(r'scheduled_actions/$', get_actions, name='scheduled_actions'),
+    url(r'recent_actions/$', get_recent_actions, name='recent_actions'),
 ]

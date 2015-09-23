@@ -3,7 +3,7 @@ in the Microcontrollers project. It creates and renders the user-generated
 reports, status pages, etc.'''
 
 from django.shortcuts import render
-from Receiver.models import Node, Record, Sensor, Action
+from Receiver.models import Node, Record, Sensor, Action, CompletedAction
 from Receiver.forms import CustomReport
 import json
 from django.utils import timezone
@@ -304,9 +304,14 @@ def node_list(request):
 
     out = []
     for node in nodes:
-        sensors = Sensor.objects.filter(node=node)
-        actions = Action.objects.filter(node=node)
-        out.append([node, sensors, actions])
+        sensors = Sensor.objects.filter(node=node).values()
+        temp = []
+        for s in sensors:
+            temp.append(s)
+        while len(temp) < 5:
+            temp.append(None)
+        actions = Action.objects.filter(node=node).values()
+        out.append([node, temp, actions])
 
     return render(request, 'node_list.html',
                   {'nodes': out,})
@@ -340,7 +345,7 @@ def node_status(request, nodeid):
                   {'status': online,
                    'node': node,})
 
-@login_required(login_url='actions.html')
+@login_required(login_url='login.html')
 def get_actions(request):
     '''
     Return a list of scheduled actions
@@ -348,5 +353,17 @@ def get_actions(request):
     @return: rendered actions.html containing a list of actions
     '''
     actions = Action.objects.all()
-    return render(request, 'actions.html',
+    return render(request, 'scheduled_actions.html',
+                  {'actions': actions,})
+
+@login_required(login_url='login.html')
+def get_recent_actions(request):
+    '''
+    Return a list of recently executed actions
+    @param request: the HTTP GET request
+    @return: rendered recent_actions.html containing list of recently
+    executed actions
+    '''
+    actions = CompletedAction.objects.all()
+    return render(request, 'recent_actions.html',
                   {'actions': actions,})
