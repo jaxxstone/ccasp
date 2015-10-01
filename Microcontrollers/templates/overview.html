@@ -23,8 +23,8 @@
       {% for record in records %}
       <tr>
 	<td>{{ forloop.counter }}</td>
-	<td>{% if record.node.name %}{{ record.node.name }}{% else %}{{ record.node }}{% endif %}</td>
-	<td>{% if record.sensor.name %}{{ record.sensor.name }}{% else %}{{ record.sensor }}{% endif %}</td>
+	<td>{% if record.node__name %}{{ record.node__name }}{% else %}{{ record.node }}{% endif %}</td>
+	<td>{% if record.sensor__name %}{{ record.sensor__name }}{% else %}{{ record.sensor }}{% endif %}</td>
 	<td>{{ record.value }}</td>
 	<td>{{ record.time_recorded }}</td>
       </tr>

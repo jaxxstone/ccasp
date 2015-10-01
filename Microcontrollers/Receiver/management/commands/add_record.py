@@ -2,7 +2,7 @@
 from received serial data and add it to the database.'''
 # pylint: disable=no-value-for-parameter, no-member
 
-from Receiver.models import Node, Record
+from Receiver.models import Node, Record, Sensor
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
@@ -27,7 +27,16 @@ class Command(BaseCommand):
         # Create new record and add value
         new_record = Record()
         new_record.value = out
-        new_record.sensor = Sensor.objects.get(pk=node_id, node__node_id=1)
+        try:
+            new_record.sensor = Sensor.objects.get(pk=node_id)
+        except:
+            new_sensor = Sensor()
+            new_sensor.node = Node.objects.get(pk=1)
+            new_sensor.name = "Auto Add"
+            new_sensor.save()
+            new_record.sensor = new_sensor
+
+        print str(new_record.sensor) + " has been added"
 
         # Try to match node to existing node
         # objects.get() raises DNE exception if not found

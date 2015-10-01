@@ -10,9 +10,7 @@
       <div class="caption">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">
-              {% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}
-	    </h3>
+	    <h3 class="panel-title">{% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}</h3>
 	  </div>
 	  <div class="panel-body">
 	    <div class="btn-group-vertical" role="group" style="display:inline;">
@@ -26,10 +24,10 @@
 		<ul class="dropdown-menu">
 		  <li><a href="#">Modify Sensor</a></li>
 		  <li role="separator" class="divider"></li>
-		  <li><a href="{% url 'records:daily_report' node.0.node_id %}">Daily Report</a></li>
-		  <li><a href="{% url 'records:weekly_report' node.0.node_id %}">Weekly Report</a></li>
-		  <li><a href="{% url 'records:monthly_report' node.0.node_id %}">Monthly Report</a></li>
-		  <li><a href="{% url 'records:yearly_report' node.0.node_id %}">Yearly Report</a></li>
+		  <li><a href="{% url 'records:daily_report' node.0.node_id sensor.id %}">Daily Report</a></li>
+		  <li><a href="{% url 'records:weekly_report' node.0.node_id sensor.id %}">Weekly Report</a></li>
+		  <li><a href="{% url 'records:monthly_report' node.0.node_id sensor.id %}">Monthly Report</a></li>
+		  <li><a href="{% url 'records:yearly_report' node.0.node_id sensor.id %}">Yearly Report</a></li>
 		  <li><a href="{% url 'records:custom_form' node.0.node_id %}">Custom Report</a></li>
 		</ul>
 	      </div>

@@ -124,21 +124,60 @@ class Sensor(models.Model):
         '''Override default string behavior'''
         return "Node " + str(self.node.node_id) + " " + self.name + " Sensor"
 
-    '''
-    # Took a stab at limiting number of sensors per node
-    # Commenting out for now
-    def save(self):
-        if Sensor.objects.filter(node = self.node).count() >= 5:
-            return
-        else:
-            super(Sensor, self).save()
-            
-    def clean(self):
-        if Sensor.objects.filter(node = self.node).count() > 5:
-            raise ValidationError("Cannot add more than five sensors per node")
-        else:
-            super(Sensor, self).clean()
-    '''
+    def get_records_for_today(self):
+        '''
+        Return records from the past 24 hours
+        @return: a list of Record objects for this sensor recorded in the past
+        24 hours
+        '''
+        today = timezone.now()
+        date_from = today - timezone.timedelta(days=1)
+        return Record.objects.filter(sensor=self,
+                                     time_recorded__gte=date_from)
+
+    def get_records_for_week(self):
+        '''
+        Return records from the past 7 days
+        @return: a list of Record objects for this sensor recorded in the past
+        7 days
+        '''
+        today = timezone.now()
+        date_from = today - timezone.timedelta(days=7)
+        return Record.objects.filter(sensor=self,
+                                     time_recorded__gte=date_from)
+
+    def get_records_for_month(self):
+        '''
+        Return records from the past 31 days
+        @return: a list of Record objects for this sensor recorded in the past
+        31 days
+        '''
+        today = timezone.now()
+        date_from = today - timezone.timedelta(days=31)
+        return Record.objects.filter(sensor=self,
+                                     time_recorded__gte=date_from)
+
+    def get_records_for_year(self):
+        '''
+        Return records from the past 365 days
+        @return: a list of Record objects for this sensor recorded in the past
+        365 days
+        '''
+        today = timezone.now()
+        date_from = today - timezone.timedelta(days=365)
+        return Record.objects.filter(sensor=self,
+                                     time_recorded__gte=date_from)
+
+    def get_records_for_custom(self, start, end):
+        '''
+        Return records from custom date range
+        @param start: the starting datetime
+        @param end: the ending datetime
+        @return: a list of Record objects for this sensor recorded in the
+        specified time period
+        '''
+        return Record.objects.filter(sensor=self, time_recorded__gte=start,
+                                     time_recorded__lte=end)
 
 class Action(models.Model):
     '''

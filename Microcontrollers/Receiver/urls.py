@@ -6,10 +6,10 @@ from Receiver.views import overview, daily_report, weekly_report, monthly_report
 
 urlpatterns = [
     url(r'^$', overview, name='overview'),
-    url(r'daily_report/([0-9]*)?$', daily_report, name='daily_report'),
-    url(r'weekly_reports/([0-9]*)?$', weekly_report, name='weekly_report'),
-    url(r'monthly_report/([0-9]*)?$', monthly_report, name='monthly_report'),
-    url(r'yearly_report/([0-9]*)?$', yearly_report, name='yearly_report'),
+    url(r'daily_report/([0-9]*)/([0-9]*)?$', daily_report, name='daily_report'),
+    url(r'weekly_reports/([0-9]*)/([0-9]*)?$', weekly_report, name='weekly_report'),
+    url(r'monthly_report/([0-9]*)/([0-9]*)?$', monthly_report, name='monthly_report'),
+    url(r'yearly_report/([0-9]*)/([0-9]*)?$', yearly_report, name='yearly_report'),
     url(r'custom_form/([0-9]*)?$', custom_form, name='custom_form'),
     url(r'custom_report/$', custom_report, name='custom_report'),
     url(r'report_list/$', report_list, name='report_list'),

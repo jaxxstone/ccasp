@@ -25,7 +25,7 @@ def report_list(request):
                   {'nodes': nodes})
 
 @login_required(login_url='login.html')
-def daily_report(request, nodeid=None):
+def daily_report(request, nodeid=None, sensorid=None):
     '''
     Return all records from today.
     @param request: the HTTP GET request
@@ -34,28 +34,25 @@ def daily_report(request, nodeid=None):
     and that Node's Sensor values recorded over the past 24 hours
     '''
     time_format = "%Y-%m-%d %H:%M:%S"
-    if nodeid:
-        nodes = Node.objects.filter(pk=nodeid)
-    else:
-        nodes = Node.objects.all()
+    nodes = Node.objects.get(pk=nodeid)
+    sensor = Sensor.objects.get(node=nodes, pk=sensorid)
 
     my_node_list = []
-    for node in nodes:
-        records = node.get_records_for_today()
-        values = []
-        for record in records:
-            # Get time that record was added
-            my_time = record.time_recorded
-            # Format time as string
-            my_time = my_time.strftime(time_format)
-            # Convert to Epoch time (in ms) for Highcharts
-            my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
-            my_time *= 1000
-            # Append to list
-            # Highcharts requires [time, value] format for datetime graph
-            values.append([my_time, record.value])
+    sensor_records = sensor.get_records_for_today()
+    values = []
+    for record in sensor_records:
+        # Get time that record was added
+        my_time = record.time_recorded
+        # Format time as string
+        my_time = my_time.strftime(time_format)
+        # Convert to Epoch time (in ms) for Highcharts
+        my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
+        my_time *= 1000
+        # Append to list
+        # Highcharts requires [time, value] format for datetime graph
+        values.append([my_time, record.value])
         # Add node and sensor values list to main list
-        my_node_list.append([node.node_id, values])
+    my_node_list.append([sensor.id, values])
 
     return render(request, 'report.html',
                   {'request': request,
@@ -63,7 +60,7 @@ def daily_report(request, nodeid=None):
                    'type': 'Daily',})
 
 @login_required(login_url='login.html')
-def weekly_report(request, nodeid=None):
+def weekly_report(request, nodeid=None, sensorid=None):
     '''
     Return all records from the past week.
     @param request: the HTTP GET request
@@ -72,28 +69,25 @@ def weekly_report(request, nodeid=None):
     and that Node's Sensor values recorded over the past 7 days
     '''
     time_format = "%Y-%m-%d %H:%M:%S"
-    my_node_list = []
-    if nodeid:
-        nodes = Node.objects.filter(pk=nodeid)
-    else:
-        nodes = Node.objects.all()
+    nodes = Node.objects.get(pk=nodeid)
+    sensor = Sensor.objects.get(node=nodes, pk=sensorid)
 
-    for node in nodes:
-        records = node.get_records_for_week()
-        values = []
-        for record in records:
-            # Get time that record was added
-            my_time = record.time_recorded
-            # Format time as string
-            my_time = my_time.strftime(time_format)
-            # Convert to Epoch time (in ms) for Highcharts
-            my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
-            my_time *= 1000
-            # Append to list
-            # Highcharts requires [time, value] format for datetime graph
-            values.append([my_time, record.value])
+    my_node_list = []
+    sensor_records = sensor.get_records_for_week()
+    values = []
+    for record in sensor_records:
+        # Get time that record was added
+        my_time = record.time_recorded
+        # Format time as string
+        my_time = my_time.strftime(time_format)
+        # Convert to Epoch time (in ms) for Highcharts
+        my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
+        my_time *= 1000
+        # Append to list
+        # Highcharts requires [time, value] format for datetime graph
+        values.append([my_time, record.value])
         # Add node and sensor values list to main list
-        my_node_list.append([node.node_id, values])
+    my_node_list.append([sensor.id, values])
 
     return render(request, 'report.html',
                   {'request': request,
@@ -101,7 +95,7 @@ def weekly_report(request, nodeid=None):
                    'type': 'Weekly',})
 
 @login_required(login_url='login.html')
-def monthly_report(request, nodeid=None):
+def monthly_report(request, nodeid=None, sensorid=None):
     '''
     Return all records from the past month.
     @param request: the HTTP GET request
@@ -110,28 +104,25 @@ def monthly_report(request, nodeid=None):
     and that Node's Sensor values recorded over the past 31 days
     '''
     time_format = "%Y-%m-%d %H:%M:%S"
-    my_node_list = []
-    if nodeid:
-        nodes = Node.objects.filter(pk=nodeid)
-    else:
-        nodes = Node.objects.all()
+    nodes = Node.objects.get(pk=nodeid)
+    sensor = Sensor.objects.get(node=nodes, pk=sensorid)
 
-    for node in nodes:
-        records = node.get_records_for_month()
-        values = []
-        for record in records:
-            # Get time that record was added
-            my_time = record.time_recorded
-            # Format time as string
-            my_time = my_time.strftime(time_format)
-            # Convert to Epoch time (in ms) for Highcharts
-            my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
-            my_time *= 1000
-            # Append to list
-            # Highcharts requires [time, value] format for datetime graph
-            values.append([my_time, record.value])
+    my_node_list = []
+    sensor_records = sensor.get_records_for_month()
+    values = []
+    for record in sensor_records:
+        # Get time that record was added
+        my_time = record.time_recorded
+        # Format time as string
+        my_time = my_time.strftime(time_format)
+        # Convert to Epoch time (in ms) for Highcharts
+        my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
+        my_time *= 1000
+        # Append to list
+        # Highcharts requires [time, value] format for datetime graph
+        values.append([my_time, record.value])
         # Add node and sensor values list to main list
-        my_node_list.append([node.node_id, values])
+    my_node_list.append([sensor.id, values])
 
     return render(request, 'report.html',
                   {'request': request,
@@ -139,7 +130,7 @@ def monthly_report(request, nodeid=None):
                    'type': 'Monthly',})
 
 @login_required(login_url='login.html')
-def yearly_report(request, nodeid=None):
+def yearly_report(request, nodeid=None, sensorid=None):
     '''
     Return all records from the past year.
     @param request: the HTTP GET request
@@ -148,28 +139,25 @@ def yearly_report(request, nodeid=None):
     and that Node's Sensor values recorded over the past 365 days
     '''
     time_format = "%Y-%m-%d %H:%M:%S"
-    my_node_list = []
-    if nodeid:
-        nodes = Node.objects.filter(pk=nodeid)
-    else:
-        nodes = Node.objects.all()
+    nodes = Node.objects.get(pk=nodeid)
+    sensor = Sensor.objects.get(node=nodes, pk=sensorid)
 
-    for node in nodes:
-        records = node.get_records_for_year()
-        values = []
-        for record in records:
-            # Get time that record was added
-            my_time = record.time_recorded
-            # Format time as string
-            my_time = my_time.strftime(time_format)
-            # Convert to Epoch time (in ms) for Highcharts
-            my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
-            my_time *= 1000
-            # Append to list
-            # Highcharts requires [time, value] format for datetime graph
-            values.append([my_time, record.value])
+    my_node_list = []
+    sensor_records = sensor.get_records_for_year()
+    values = []
+    for record in sensor_records:
+        # Get time that record was added
+        my_time = record.time_recorded
+        # Format time as string
+        my_time = my_time.strftime(time_format)
+        # Convert to Epoch time (in ms) for Highcharts
+        my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
+        my_time *= 1000
+        # Append to list
+        # Highcharts requires [time, value] format for datetime graph
+        values.append([my_time, record.value])
         # Add node and sensor values list to main list
-        my_node_list.append([node.node_id, values])
+    my_node_list.append([sensor.id, values])
 
     return render(request, 'report.html',
                   {'request': request,
@@ -281,16 +269,12 @@ def overview(request):
     @param request: the HTTP GET request
     @return: rendered overview.html containing the Node objects and Records
     '''
-    # Get all node objects
-    nodes = Node.objects.all()
-    # out will hold list of records for each node
-    out = Record.objects.all().order_by('-time_recorded')[:100]
+    # records will hold list of records for each node
+    records = Record.objects.values('node__name', 'sensor__name', 'value', 'time_recorded').order_by('time_recorded').reverse()[:100]
 
     # Return rendered template
     return render(request, 'overview.html',
-                  {'records': out,
-                   'nodes': nodes,
-                   'request': request,})
+                  {'records': records,})
 
 @login_required(login_url='login.html')
 def node_list(request):
