@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
+{% block content %}
+<script src="{% static 'js/searchable.js' %}" type="text/javascript"></script>
+<div class="table-responsive">
+  <h1>Actions</br>
+    <small>Shows Scheduled Actions</small>
+  </h1>
+  <div class="input-group"> <span class="input-group-addon">Filter</span>
+    <input id="filter" type="text" class="form-control" placeholder="Search">
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>#</th>
+	<th>Action</th>
+	<th>Node</th>
+	<th>Sensor</th>
+	<th>Date/Time</th>
+	<th>Recurrence Type</th>
+      </tr>
+    </thead>
+    <tbody class="searchable">
+      {% timezone "America/New_York" %}
+      {% for action in actions %}
+      <tr>
+	<td>{{ forloop.counter }}</td>
+	<td>{{ action.name }}</td>
+	<td>{{ action.node.name }}</td>
+	<td>{{ action.sensor.name }}</td>
+	<td>{{ action.datetime_to_execute }}</td>
+	<td>{{ action.recurrence_textbox }}</td>
+      </tr>
+      {% endfor %}
+      {% endtimezone %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
