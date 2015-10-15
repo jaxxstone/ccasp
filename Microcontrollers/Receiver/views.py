@@ -342,30 +342,5 @@ def node_list(request):
                   {'nodes': out,})
 
 @login_required(login_url='login.html')
-def node_status(request, nodeid):
-    '''
-    Return whether the given node is online
-    TODO: Implement
-    @param request: the HTTP GET request
-    @param nodeid: the Node UUID to check
-    @return: rendered node_status.html containing the Node and its online status
-    '''
-    # Commented out "Test" button behavior for now
-    # Capture management command return from stdout
-    #out = StringIO()
-    #call_command('get_node_status', nodeid, stdout = out)
-    #status = out.getvalue()
-    status = 0
-    #try:
-    #    status = int(status)
-    #except:
-    #    pass
-
-    node = Node.objects.get(pk=nodeid)
-    online = False
-    if status == 1:
-        online = True
-
-    return render(request, 'node_status.html',
-                  {'status': online,
-                   'node': node,})
+def admin(request):
+    return render(request, 'admin.html')

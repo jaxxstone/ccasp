@@ -15,6 +15,7 @@ class Node(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
     # Label assigned by user
     name = models.CharField(max_length=75, null=True)
+    description = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         '''Override default string behavior'''
