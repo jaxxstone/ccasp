@@ -22,8 +22,6 @@
 						  <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
-						  <li><a href="#">Modify Sensor</a></li>
-						  <li role="separator" class="divider"></li>
 						  <li><a href="{% url 'records:daily_report' node.0.node_id sensor.id %}">Daily Report</a></li>
 						  <li><a href="{% url 'records:weekly_report' node.0.node_id sensor.id %}">Weekly Report</a></li>
 						  <li><a href="{% url 'records:monthly_report' node.0.node_id sensor.id %}">Monthly Report</a></li>

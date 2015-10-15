@@ -7,7 +7,7 @@ from Receiver.models import Node, Record, Sensor
 from Receiver.forms import CustomReport
 import json
 from django.utils import timezone
-from datetime import datetime as dt
+from datetime import datetime as dt, datetime
 from django.core.management import call_command
 from StringIO import StringIO
 from django.contrib.auth.decorators import login_required
@@ -304,16 +304,19 @@ def dashboard(request):
     '''
     nodes = Node.objects.all().order_by('node_id')
     gateway_status = False
+    gateway_time = None
     node_statuses = []
     for node in nodes:
         if node.get_last_update() is not None:
             node_statuses.append(node.get_last_update())
             gateway_status = True
+            gateway_time = node.get_last_update().time_recorded
         else:
             node_statuses.append(node)
     return render(request, 'dashboard.html',
                   {'node_status': node_statuses,
-                   'gateway_status': gateway_status,})
+                   'gateway_status': gateway_status,
+                   'gateway_time': gateway_time})
 
 @login_required(login_url='login.html')
 def node_list(request):
