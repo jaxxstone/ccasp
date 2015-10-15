@@ -2,55 +2,47 @@
 {% load staticfiles %}
 {% block content %}
 
+<h1>Node List <small>Shows the end nodes and sensors in network</small></h1>
+
 <div class="row">
   {% for node in nodes %}
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <img src="{% static 'images/nano_small.png' %}" alt="Arduino Nano placeholder image">
-      <div class="caption">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">{% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}</h3>
-	  </div>
-	  <div class="panel-body">
-	    <div class="btn-group-vertical" role="group" style="display:inline;">
-	      {% for sensor in node.1 %}
-	      {% if sensor %}
-	      <div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		  {{ sensor.name }}
-		  <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu">
-		  <li><a href="#">Modify Sensor</a></li>
-		  <li role="separator" class="divider"></li>
-		  <li><a href="{% url 'records:daily_report' node.0.node_id sensor.id %}">Daily Report</a></li>
-		  <li><a href="{% url 'records:weekly_report' node.0.node_id sensor.id %}">Weekly Report</a></li>
-		  <li><a href="{% url 'records:monthly_report' node.0.node_id sensor.id %}">Monthly Report</a></li>
-		  <li><a href="{% url 'records:yearly_report' node.0.node_id sensor.id %}">Yearly Report</a></li>
-		  <li><a href="{% url 'records:custom_form' node.0.node_id %}">Custom Report</a></li>
-		</ul>
-	      </div>
-	      {% else %}
-	      <div class="btn-group" role="group">
-		<button type="button" class="btn btn-default disabled">
-		  No Sensor<span class="caret"></span>
-		</button>
-	      </div>
-	      {% endif %}
-	      {% endfor %}
-	    </div>
-	  </div>
-	</div>
-        <div class="btn-group btn-group-justified">
-	  <div class="btn-group">
-	    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	      Actions<span class="caret"></span>
-	    </button>
-	  </div>
-	</div>       
-      </div>
-    </div>
+  <div class="col-sm-4 col-md-3">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">{% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}</h3>
+		  </div>
+		  <div class="panel-body">
+		    <div class="btn-group-vertical" role="group" style="display:inline;">
+		      {% for sensor in node.1 %}
+		      
+		      {% if sensor %}
+		      <div class="btn-group" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  {{ sensor.name }}
+						  <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+						  <li><a href="#">Modify Sensor</a></li>
+						  <li role="separator" class="divider"></li>
+						  <li><a href="{% url 'records:daily_report' node.0.node_id sensor.id %}">Daily Report</a></li>
+						  <li><a href="{% url 'records:weekly_report' node.0.node_id sensor.id %}">Weekly Report</a></li>
+						  <li><a href="{% url 'records:monthly_report' node.0.node_id sensor.id %}">Monthly Report</a></li>
+						  <li><a href="{% url 'records:yearly_report' node.0.node_id sensor.id %}">Yearly Report</a></li>
+						  <li><a href="{% url 'records:custom_form' node.0.node_id sensor.id %}">Custom Report</a></li>
+						</ul>
+		      </div>
+		      
+		      {% else %}
+			      <div class="btn-group" role="group">
+							<button type="button" class="btn btn-default disabled">
+							  No Sensor<span class="caret"></span>
+							</button>
+			      </div>
+		      {% endif %}
+		      {% endfor %}
+		    </div>
+		  </div>
+		</div>
   </div>
   {% endfor %}
 </div>

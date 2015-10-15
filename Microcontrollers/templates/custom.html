@@ -47,7 +47,7 @@
 </script>
 
 {% block form %}
-<form class="form-horizontal" role="form" method="GET" action="{% url 'records:custom_report' %}" >
+<form class="form-horizontal" role="form" method="GET" action="{% url 'records:custom_report' nodeid sensorid %}" >
   <h1>Create a custom report<br>
     <small>Select the date and time range to retrieve the data</small><br>
   </h1>

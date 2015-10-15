@@ -97,6 +97,9 @@ class Node(models.Model):
         '''
         return Record.objects.filter(node=self, time_recorded__gte=start,
                                      time_recorded__lte=end)
+        
+    def get_last_update(self):
+        return Record.objects.filter(node=self).last()
 
 class Record(models.Model):
     '''Record model represents a reading returned by a Node's Sensor'''

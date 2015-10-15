@@ -22,7 +22,7 @@
 	            x: -20 //center
 	        },
 	        subtitle: {
-	            text: 'CRAMP',
+	            text: 'Cloud Controlled Automation',
 	            x: -20
 	        },
 	        xAxis: {
@@ -66,7 +66,7 @@
 	            }]
 	        },
 	        tooltip: {
-	            valueSuffix: '°F'
+	            valueSuffix: '{{ sensor_unit }}'
 	        },
 	        legend: {
 	            layout: 'horizontal',
@@ -74,7 +74,7 @@
 	            verticalAlign: 'bottom',
 	            borderWidth: 0,
 	            labelFormatter: function () {
-	                return 'Sensor ' + this.name + ' (click to show/hide)';
+	                return '{{ sensor_name }} (click to show/hide)';
 	            }, 
 	            title: {
 	                text: 'Active Sensors',
@@ -91,6 +91,7 @@
 		        {
 		            name: '{{ node.0 }}',
 		            data: {{ node.1|safe }},
+		            gapSize: 50,
 		        },
 		        {% endfor %}
 	        ]

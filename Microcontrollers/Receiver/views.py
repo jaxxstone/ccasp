@@ -177,7 +177,7 @@ def yearly_report(request, nodeid=None, sensorid=None):
                    'sensor_unit': sensor_unit,})
 
 @login_required(login_url='login.html')
-def custom_form(request, invalid=None):
+def custom_form(request, nodeid=None, sensorid=None, invalid=None):
     '''
     Returns a form used to generate a custom report
     @param request: the HTTP GET request
@@ -196,10 +196,12 @@ def custom_form(request, invalid=None):
                        'error': True,})
     else:
         return render(request, 'custom.html',
-                      {'form': form,})
+                      {'form': form,
+                       'nodeid': nodeid,
+                       'sensorid': sensorid,})
 
 @login_required(login_url='login.html')
-def custom_report(request):
+def custom_report(request, nodeid=None, sensorid=None):
     '''
     Returns the custom report requested by the user
     @param request: the HTTP GET request
@@ -241,25 +243,27 @@ def custom_report(request):
 
     # Retrieve records
     my_node_list = []
-    nodes = Node.objects.all()
-    for node in nodes:
-        records = node.get_records_for_custom(start, end)
+    node = Node.objects.get(node_id=nodeid)
+    sensor = Sensor.objects.get(node=node, pk=sensorid)
+    type = sensor.type
+    unit = sensor.unit
+    records = sensor.get_records_for_custom(start, end)
 
-        values = []
-        for record in records:
-            # Get time that record was added
-            my_time = record.time_recorded
-            # Format time as string
-            my_time = my_time.strftime(time_format)
-            # Convert to Epoch time for Highcharts
-            my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
-            my_time *= 1000
-            # Append to list
-            # Highcharts requires [time, value] format for datetime graph
-            values.append([my_time, record.value])
+    values = []
+    for record in records:
+        # Get time that record was added
+        my_time = record.time_recorded
+        # Format time as string
+        my_time = my_time.strftime(time_format)
+        # Convert to Epoch time for Highcharts
+        my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
+        my_time *= 1000
+        # Append to list
+        # Highcharts requires [time, value] format for datetime graph
+        values.append([my_time, record.value])
 
-        # Add node and sensor values list to main list
-        my_node_list.append([node.node_id, values])
+    # Add node and sensor values list to main list
+    my_node_list.append([sensor.id, values])
 
     # Convert start and end to Epoch time for chart ranges
     start = start.strftime(time_format)
@@ -272,7 +276,10 @@ def custom_report(request):
                    'node_list': my_node_list,
                    'type': 'Custom Range',
                    'min': json.dumps(start),
-                   'max': end,})
+                   'max': end,
+                   'sensor_type': type,
+                   'sensor_unit': unit,
+                   'sensor_name': sensor.name,})
 
 @login_required(login_url='login.html')
 def overview(request):
@@ -287,6 +294,26 @@ def overview(request):
     # Return rendered template
     return render(request, 'overview.html',
                   {'records': records,})
+    
+@login_required(login_url='dashboard.html')
+def dashboard(request):
+    '''
+    Return dashboard showing general overview of system
+    @param request: the HTTP GET request
+    @return: rendered dashboard.html
+    '''
+    nodes = Node.objects.all().order_by('node_id')
+    gateway_status = False
+    node_statuses = []
+    for node in nodes:
+        if node.get_last_update() is not None:
+            node_statuses.append(node.get_last_update())
+            gateway_status = True
+        else:
+            node_statuses.append(node)
+    return render(request, 'dashboard.html',
+                  {'node_status': node_statuses,
+                   'gateway_status': gateway_status,})
 
 @login_required(login_url='login.html')
 def node_list(request):
@@ -300,7 +327,7 @@ def node_list(request):
 
     out = []
     for node in nodes:
-        sensors = Sensor.objects.filter(node=node).values()
+        sensors = Sensor.objects.filter(node=node).values().order_by('name')
         temp = []
         for s in sensors:
             temp.append(s)
