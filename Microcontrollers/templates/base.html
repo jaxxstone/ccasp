@@ -7,82 +7,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
+    <meta name="description" content="Homepage for the Cloud Controlled Automation Senior Project">
     <meta name="author" content="">
     <link rel="icon" href="{% static 'images/favicon_new.ico' %}">
-
     <title>Cloud Controlled Automation</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
     <!-- Custom styles for this template -->
-    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
   </head>
+  
   <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Cloud Controlled Automation</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-          	<li><a href="{% url 'admin:index' %}">Admin</a></li>
-            <li><a href="{% url 'records:overview' %}">Overview</a></li>
-            <li><a href="{% url 'records:node_list' %}">Nodes</a></li>
-            <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <!-- End navbar -->
-
+		<!-- Topbar / Sidebar -->
+      <nav class="navbar navbar-inverse sidebar" role="navigation">
+		    <div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Navigation</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+					<ul class="nav navbar-nav" data-spy="affix" data-offset-top="0">
+						<li class="{% active_page 'records:overview' %}">
+							<a href="{% url 'records:overview' %}">Home
+								<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span>
+							</a>
+						</li>
+						<li class="{% active_page 'records:node_list' %}">
+							<a href="{% url 'records:node_list' %}">Nodes
+								<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cloud"></span>
+							</a>
+						</li>
+						<li>
+							<a href="{% url 'admin:index' %}">Admin
+								<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span>
+							</a>
+						</li>
+						<li>
+							<a href="{% url 'django.contrib.auth.views.logout' %}">Logout
+								<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-transfer"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+  	<!-- End Topbar / Sidebar -->
+  	
     <!-- Body -->
-    <div class="container-fluid">
-      <div class="row">
-	
-	<!-- Sidebar -->
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li><a href="{% url 'admin:index' %}">Admin</a></li>
-				    <li><a href="{% url 'records:overview' %}" data-ytta-id="-">Overview</a></li>
-				    <li><a href="{% url 'records:node_list' %}" data-ytta-id="-">Nodes</a></li>
-          </ul>
-        </div>
-	
-	<!-- Main -->
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-	  {% block content %}
-	  {% endblock %}        
-        </div>
-	<!-- End main -->
-	
-      </div>
-      <!-- End sidebar -->
-      
-    </div>  
-    <!-- End body -->
-
-    <!-- Bootstrap core JavaScript
-	 ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript"></script>
-    <!-- Bootstrap js -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <!--  Chart.js -->
-    <!--<script src="{% static 'js/Chart/Chart.min.js' %}" type="text/javascript"></script>-->
-    <!--  Highchart.js -->
-    <!-- <script src="http://code.highcharts.com/highcharts.js" type="text/javascript"></script>-->
-    <script src="http://code.highcharts.com/stock/highstock.js" type="text/javascript"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js" type="text/javascript"></script>
-    <!--  Searchable tables -->
-    <script src="{% static 'js/searchable.js' %}" type="text/javascript"></script>    
+				<!-- Main -->
+	      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="overflow-y:auto">
+				  {% block content %}
+				  {% endblock %}        
+	      </div>
+				<!-- End main -->
+ 		<!-- End sidebar -->
+  	<!-- End body container -->
+	  <!-- Javascript placed at the end of the document so the pages load faster -->
+	  <!-- Bootstrap core JavaScript -->
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript"></script>
+	  <!-- Bootstrap js -->
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	  <!--  Highchart.js -->
+	  <script src="http://code.highcharts.com/stock/highstock.js" type="text/javascript"></script>
+	  <!-- Searchable tables -->
+	  <script src="{% static 'js/searchable.js' %}" type="text/javascript"></script>
+	  <!-- Sidebar --> 
+	  <script src="{%static 'js/sidebar.js' %}" type="text/javascript"></script>
   </body>
 </html>
