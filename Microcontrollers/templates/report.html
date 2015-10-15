@@ -12,14 +12,13 @@
 	        }
 	    });
 		
-		
 	    $('#container').highcharts({
 	    	chart: {
 	    		zoomType: 'xy',
 	    		defaultSeriesType: 'line',
 	    	},
 	    	title: {
-	            text: '{{ type }} Temperature Values',
+	            text: '{{ type }} {{ sensor_type }} Values',
 	            x: -20 //center
 	        },
 	        subtitle: {
@@ -58,7 +57,7 @@
 	        },
 	        yAxis: {
 	            title: {
-	                text: 'Temperature (°F)'
+	                text: '{{ sensor_type }} {{ sensor_unit }}'
 	            },
 	            plotLines: [{
 	                value: 0,

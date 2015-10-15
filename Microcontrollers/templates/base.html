@@ -1,4 +1,4 @@
-{% load static from staticfiles %} {% load widget_tweaks %} {% load tags %}
+{% load static from staticfiles %} {% load widget_tweaks %} {% load tags %} {%load admin_urls %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +9,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" href="{% static 'images/favicon_new.ico' %}">
 
     <title>Cloud Controlled Automation</title>
 
@@ -34,9 +34,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+          	<li><a href="{% url 'admin:index' %}">Admin</a></li>
             <li><a href="{% url 'records:overview' %}">Overview</a></li>
             <li><a href="{% url 'records:node_list' %}">Nodes</a></li>
-	    <li><a href="{% url 'records:scheduled_actions' %}">Actions</a></li>
             <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
           </ul>
         </div>
@@ -51,11 +51,9 @@
 	<!-- Sidebar -->
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-	    <li><a href="{% url 'records:overview' %}" data-ytta-id="-">Overview</a></li>
-	    <li><a href="{% url 'records:node_list' %}" data-ytta-id="-">Nodes</a></li>
-	    <li><a href="{% url 'records:scheduled_actions' %}" data-ytta-id="-">Actions</a></li>
-	    <li><a href="{% url 'records:recent_actions' %}" data-ytta-id="-">Recent Actions</a></li>
-	    <li><a href="#" data-ytta-id="-">Sensors</a></li>
+            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+				    <li><a href="{% url 'records:overview' %}" data-ytta-id="-">Overview</a></li>
+				    <li><a href="{% url 'records:node_list' %}" data-ytta-id="-">Nodes</a></li>
           </ul>
         </div>
 	

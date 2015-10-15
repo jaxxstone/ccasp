@@ -119,6 +119,24 @@ class Sensor(models.Model):
     name = models.CharField(max_length=75, null=True)
     # Node that this Sensor is associated with
     node = models.ForeignKey(Node)
+    # Type of sensor
+    sensor_choices = (('Air Temperature', 'Air Temperature'), 
+                      ('Humidity', 'Humidity'),
+                      ('Soil Moisture', 'Soil Moisture'),
+                      ('Rain', 'Rain'),
+                      ('Voltage', 'Voltage'))
+    sensor_units = (('C', 'Celcius'),
+                    ('F', 'Fahrenheit'),
+                    ('%', '%'),
+                    ('in', 'Inches'),
+                    ('cm', 'Centimeters'),
+                    ('W', 'Watts'))
+    type = models.CharField(max_length=50,
+                            choices=sensor_choices,
+                            null=True)
+    unit = models.CharField(max_length=50,
+                            choices=sensor_units,
+                            null=True)
 
     def __str__(self):
         '''Override default string behavior'''
@@ -178,36 +196,3 @@ class Sensor(models.Model):
         '''
         return Record.objects.filter(sensor=self, time_recorded__gte=start,
                                      time_recorded__lte=end)
-
-class Action(models.Model):
-    '''
-    TODO: Finish
-    Action model represents a user-defined action to be performed by a node
-    or sensor at a specified time
-    '''
-    # User-provided name of the Action
-    name = models.CharField(max_length=75, null=True)
-    # Node associated with the Action
-    node = models.ForeignKey(Node, null=True)
-    sensor = models.ForeignKey(Sensor, null=True)
-
-    datetime_to_execute = models.DateTimeField(auto_now=False,
-                                               auto_now_add=False,
-                                               null=True)
-    recurrence_choices = (('None', 'None'),
-                          ('Daily', 'Daily'),
-                          ('Weekly', 'Weekly'),
-                          ('Monthly', 'Monthly'))
-    recurrence_textbox = models.CharField(max_length=255,
-                                          choices=recurrence_choices,
-                                          default='None')
-    
-
-    def __str__(self):
-        '''Override default string behavior'''
-        return "Node " + str(self.node) + ": " + str(self.name)
-
-class CompletedAction(models.Model):
-    action = models.ForeignKey(Action)
-    status = models.BooleanField()
-    time = models.DateTimeField(auto_now=True)

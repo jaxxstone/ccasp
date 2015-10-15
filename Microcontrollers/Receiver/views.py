@@ -3,7 +3,7 @@ in the Microcontrollers project. It creates and renders the user-generated
 reports, status pages, etc.'''
 
 from django.shortcuts import render
-from Receiver.models import Node, Record, Sensor, Action, CompletedAction
+from Receiver.models import Node, Record, Sensor
 from Receiver.forms import CustomReport
 import json
 from django.utils import timezone
@@ -36,7 +36,8 @@ def daily_report(request, nodeid=None, sensorid=None):
     time_format = "%Y-%m-%d %H:%M:%S"
     nodes = Node.objects.get(pk=nodeid)
     sensor = Sensor.objects.get(node=nodes, pk=sensorid)
-
+    sensor_type = sensor.type
+    sensor_unit = sensor.unit
     my_node_list = []
     sensor_records = sensor.get_records_for_today()
     values = []
@@ -57,7 +58,9 @@ def daily_report(request, nodeid=None, sensorid=None):
     return render(request, 'report.html',
                   {'request': request,
                    'node_list': my_node_list,
-                   'type': 'Daily',})
+                   'type': 'Daily',
+                   'sensor_type': sensor_type,
+                   'sensor_unit': sensor_unit,})
 
 @login_required(login_url='login.html')
 def weekly_report(request, nodeid=None, sensorid=None):
@@ -71,7 +74,8 @@ def weekly_report(request, nodeid=None, sensorid=None):
     time_format = "%Y-%m-%d %H:%M:%S"
     nodes = Node.objects.get(pk=nodeid)
     sensor = Sensor.objects.get(node=nodes, pk=sensorid)
-
+    sensor_type = sensor.type
+    sensor_unit = sensor.unit
     my_node_list = []
     sensor_records = sensor.get_records_for_week()
     values = []
@@ -92,7 +96,9 @@ def weekly_report(request, nodeid=None, sensorid=None):
     return render(request, 'report.html',
                   {'request': request,
                    'node_list': my_node_list,
-                   'type': 'Weekly',})
+                   'type': 'Weekly',
+                   'sensor_type': sensor_type,
+                   'sensor_unit': sensor_unit,})
 
 @login_required(login_url='login.html')
 def monthly_report(request, nodeid=None, sensorid=None):
@@ -106,7 +112,8 @@ def monthly_report(request, nodeid=None, sensorid=None):
     time_format = "%Y-%m-%d %H:%M:%S"
     nodes = Node.objects.get(pk=nodeid)
     sensor = Sensor.objects.get(node=nodes, pk=sensorid)
-
+    sensor_type = sensor.type
+    sensor_unit = sensor.unit
     my_node_list = []
     sensor_records = sensor.get_records_for_month()
     values = []
@@ -127,7 +134,9 @@ def monthly_report(request, nodeid=None, sensorid=None):
     return render(request, 'report.html',
                   {'request': request,
                    'node_list': my_node_list,
-                   'type': 'Monthly',})
+                   'type': 'Monthly',
+                   'sensor_type': sensor_type,
+                   'sensor_unit': sensor_unit,})
 
 @login_required(login_url='login.html')
 def yearly_report(request, nodeid=None, sensorid=None):
@@ -141,7 +150,8 @@ def yearly_report(request, nodeid=None, sensorid=None):
     time_format = "%Y-%m-%d %H:%M:%S"
     nodes = Node.objects.get(pk=nodeid)
     sensor = Sensor.objects.get(node=nodes, pk=sensorid)
-
+    sensor_type = sensor.type
+    sensor_unit = sensor.unit
     my_node_list = []
     sensor_records = sensor.get_records_for_year()
     values = []
@@ -162,7 +172,9 @@ def yearly_report(request, nodeid=None, sensorid=None):
     return render(request, 'report.html',
                   {'request': request,
                    'node_list': my_node_list,
-                   'type': 'Yearly',})
+                   'type': 'Yearly',
+                   'sensor_type': sensor_type,
+                   'sensor_unit': sensor_unit,})
 
 @login_required(login_url='login.html')
 def custom_form(request, invalid=None):
@@ -294,8 +306,7 @@ def node_list(request):
             temp.append(s)
         while len(temp) < 5:
             temp.append(None)
-        actions = Action.objects.filter(node=node).values()
-        out.append([node, temp, actions])
+        out.append([node, temp])
 
     return render(request, 'node_list.html',
                   {'nodes': out,})
@@ -328,26 +339,3 @@ def node_status(request, nodeid):
     return render(request, 'node_status.html',
                   {'status': online,
                    'node': node,})
-
-@login_required(login_url='login.html')
-def get_actions(request):
-    '''
-    Return a list of scheduled actions
-    @param request: the HTTP GET request
-    @return: rendered actions.html containing a list of actions
-    '''
-    actions = Action.objects.all()
-    return render(request, 'scheduled_actions.html',
-                  {'actions': actions,})
-
-@login_required(login_url='login.html')
-def get_recent_actions(request):
-    '''
-    Return a list of recently executed actions
-    @param request: the HTTP GET request
-    @return: rendered recent_actions.html containing list of recently
-    executed actions
-    '''
-    actions = CompletedAction.objects.all()
-    return render(request, 'recent_actions.html',
-                  {'actions': actions,})
