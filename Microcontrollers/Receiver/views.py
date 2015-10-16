@@ -61,7 +61,8 @@ def daily_report(request, nodeid=None, sensorid=None):
                    'node_list': my_node_list,
                    'type': 'Daily',
                    'sensor_type': sensor_type,
-                   'sensor_unit': sensor_unit,})
+                   'sensor_unit': sensor_unit,
+                   'sensor_name': sensor.name,})
 
 @login_required(login_url='login.html')
 def weekly_report(request, nodeid=None, sensorid=None):
@@ -99,7 +100,8 @@ def weekly_report(request, nodeid=None, sensorid=None):
                    'node_list': my_node_list,
                    'type': 'Weekly',
                    'sensor_type': sensor_type,
-                   'sensor_unit': sensor_unit,})
+                   'sensor_unit': sensor_unit,
+                   'sensor_name': sensor.name,})
 
 @login_required(login_url='login.html')
 def monthly_report(request, nodeid=None, sensorid=None):
@@ -137,7 +139,8 @@ def monthly_report(request, nodeid=None, sensorid=None):
                    'node_list': my_node_list,
                    'type': 'Monthly',
                    'sensor_type': sensor_type,
-                   'sensor_unit': sensor_unit,})
+                   'sensor_unit': sensor_unit,
+                   'sensor_name': sensor.name,})
 
 @login_required(login_url='login.html')
 def yearly_report(request, nodeid=None, sensorid=None):
@@ -175,7 +178,8 @@ def yearly_report(request, nodeid=None, sensorid=None):
                    'node_list': my_node_list,
                    'type': 'Yearly',
                    'sensor_type': sensor_type,
-                   'sensor_unit': sensor_unit,})
+                   'sensor_unit': sensor_unit,
+                   'sensor_name': sensor.name,})
 
 @login_required(login_url='login.html')
 def custom_form(request, nodeid=None, sensorid=None, invalid=None):
