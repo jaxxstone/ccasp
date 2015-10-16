@@ -11,7 +11,7 @@ from django.utils import timezone
 from datetime import datetime as dt, timedelta
 from django.contrib.auth.decorators import login_required
 from dateutil import parser
-from math import floor
+from Microcontrollers import settings
 
 @login_required(login_url='login.html')
 def report_list(request):
@@ -348,7 +348,7 @@ def dashboard(request):
             temp = temp.time_recorded
             temp = temp.minute + (temp.second / 60) + (temp.hour * 60)
             
-            if current - temp > 6:
+            if current - temp > settings.UPDATE_FREQUENCY:
                 downtime_counter += current - temp
             
             temp = record
@@ -361,7 +361,7 @@ def dashboard(request):
         uptime_counter = timezone.now()
         uptime_counter = uptime_counter.minute + (uptime_counter.second / 60) + (uptime_counter.hour * 60)
         # Difference between current and last record > 6, then there's downtime
-        if uptime_counter - temp > 6:
+        if uptime_counter - temp > settings.UPDATE_FREQUENCY:
             downtime_counter += uptime_counter - temp
             gateway_status = False
         # Store new downtime
@@ -379,7 +379,7 @@ def dashboard(request):
         current = timezone.now()
         current = current.minute + (current.second / 60) + (current.hour * 60)
         start_range = start_range.minute + (start_range.second / 60) + (start_range.hour * 60)
-        if current - start_range > 6:
+        if current - start_range > settings.UPDATE_FREQUENCY:
             downtime_counter += current - start_range
             gateway_status = False
         if 'DOWNTIME' not in os.environ:

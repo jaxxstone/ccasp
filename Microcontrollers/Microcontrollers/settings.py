@@ -100,6 +100,7 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),
 LOGIN_REDIRECT_URL = 'records/'
 LOGIN_URL = 'django.contrib.auth.views.login'
 
+# TTY port for serial connection
 _tty_dir = os.listdir('/dev/')
 _tty_port = ''
 for tty in _tty_dir:
@@ -110,6 +111,9 @@ if _tty_port == '':
     _tty_port == '/dev/ttyACM0'
 
 TTY_PORT = str(_tty_port)
+
+# Update frequency for Raspberry Pi Gateway
+UPDATE_FREQUENCY = 6
 
 #http://djangotricks.blogspot.com/2013/12/how-to-store-your-media-files-in-amazon.html
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'

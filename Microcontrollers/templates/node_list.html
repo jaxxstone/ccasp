@@ -9,7 +9,13 @@
   <div class="col-sm-4 col-md-3">
 		<div class="panel panel-default">
 		  <div class="panel-heading">
-		    <h3 class="panel-title">{% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}</h3>
+ 				<div class="btn-group pull-right">
+      		<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
+      		title="{% if node.0.description %}{{ node.0.description }}{% else %}No description{% endif %}"></span>
+       	</div>
+			  <div class="panel-title">
+			    <h5>{% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}</h5>
+			  </div>
 		  </div>
 		  <div class="panel-body">
 		    <div class="btn-group-vertical" role="group" style="display:inline;">
