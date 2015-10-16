@@ -24,18 +24,8 @@ class SensorInline(admin.TabularInline):
     @param admin.TabularInline: Django template for inline views
     '''
     model = Sensor
+    exclude = ('date_added',)
     extra = 0
-
-    def has_add_permission(self, request):
-        '''
-        Attempt to limit number of Sensors, doesn't work yet
-        @param request: the HTTP request
-        '''
-        num_objects = self.model.objects.count()
-        if num_objects >= 5:
-            return False
-        else:
-            return True
 
 class NodeAdmin(admin.ModelAdmin):
     '''
@@ -44,7 +34,7 @@ class NodeAdmin(admin.ModelAdmin):
     '''
     model = Node
     inlines = [SensorInline,]
+    exclude = ('node_id', 'date_added',)
     ordering = ('node_id',)
 
 admin.site.register(Node, NodeAdmin)
-admin.site.register(Sensor, SensorAdmin)

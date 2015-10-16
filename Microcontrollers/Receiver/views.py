@@ -6,11 +6,12 @@ from django.shortcuts import render
 from Receiver.models import Node, Record, Sensor
 from Receiver.forms import CustomReport
 import json
+import os
 from django.utils import timezone
-from datetime import datetime as dt, datetime
-from django.core.management import call_command
-from StringIO import StringIO
+from datetime import datetime as dt, timedelta
 from django.contrib.auth.decorators import login_required
+from dateutil import parser
+from math import floor
 
 @login_required(login_url='login.html')
 def report_list(request):
@@ -245,7 +246,7 @@ def custom_report(request, nodeid=None, sensorid=None):
     my_node_list = []
     node = Node.objects.get(node_id=nodeid)
     sensor = Sensor.objects.get(node=node, pk=sensorid)
-    type = sensor.type
+    sensor_type = sensor.type
     unit = sensor.unit
     records = sensor.get_records_for_custom(start, end)
 
@@ -274,10 +275,10 @@ def custom_report(request, nodeid=None, sensorid=None):
     return render(request, 'report.html',
                   {'request': request,
                    'node_list': my_node_list,
-                   'type': 'Custom Range',
+                   'sensor_type': 'Custom Range',
                    'min': json.dumps(start),
                    'max': end,
-                   'sensor_type': type,
+                   'sensor_type': sensor_type,
                    'sensor_unit': unit,
                    'sensor_name': sensor.name,})
 
@@ -302,6 +303,8 @@ def dashboard(request):
     @param request: the HTTP GET request
     @return: rendered dashboard.html
     '''
+    
+    # Get nodes and gateway statuses
     nodes = Node.objects.all().order_by('node_id')
     gateway_status = False
     gateway_time = None
@@ -313,10 +316,88 @@ def dashboard(request):
             gateway_time = node.get_last_update().time_recorded
         else:
             node_statuses.append(node)
+    
+    start_range = None
+    # Calculate gaps in existing records
+    # Get start range from environmental variable
+    if 'STARTRANGE' not in os.environ:
+        os.environ['STARTRANGE'] = str(timezone.datetime.date(timezone.datetime.today()))
+    start_range = parser.parse(os.environ['STARTRANGE'])
+    
+    # Make sure environmental variable is still reflecting today's date
+    if start_range.day != timezone.now().day:
+        start_range = timezone.datetime.date(timezone.datetime.today())
+        os.environ['STARTRANGE'] = str(start_range)
+        
+    # Add one day to start range to create end range
+    end_range = timezone.timedelta(days=1) + timezone.datetime.date(start_range)
+    
+    print 'Start/End Range', start_range, end_range
+    # Retrieve records within start and end range
+    records = Record.objects.filter(time_recorded__range=[start_range, end_range])
+    downtime_counter = 0
+    
+    # There's new records, check gaps
+    if records:
+        print 'HAS RECORDS'
+        temp = records[0]
+        for record in records:
+            current = record.time_recorded
+            current = current.minute + (current.second / 60) + (current.hour * 60)
+            
+            temp = temp.time_recorded
+            temp = temp.minute + (temp.second / 60) + (temp.hour * 60)
+            
+            if current - temp > 6:
+                downtime_counter += current - temp
+            
+            temp = record
+            
+        # Calculate gap from last record to now
+        temp = temp.time_recorded
+        # Get number of minutes in last record
+        temp = temp.minute + (temp.second / 60) + (temp.hour * 60)
+        # Get number of minutes in current time
+        uptime_counter = timezone.now()
+        uptime_counter = uptime_counter.minute + (uptime_counter.second / 60) + (uptime_counter.hour * 60)
+        # Difference between current and last record > 6, then there's downtime
+        if uptime_counter - temp > 6:
+            downtime_counter += uptime_counter - temp
+            gateway_status = False
+        # Store new downtime
+        if 'DOWNTIME' not in os.environ:
+            os.environ['DOWNTIME'] = str(downtime_counter)
+        else:
+            downtime_counter += int(os.environ['DOWNTIME'])
+            os.environ['DOWNTIME'] = str(downtime_counter)
+        # Make uptime reflect difference for chart
+        uptime_counter = uptime_counter - downtime_counter
+
+    # No new records, check how long we haven't been receiving any
+    else:
+        print "NO RECORDS"
+        current = timezone.now()
+        current = current.minute + (current.second / 60) + (current.hour * 60)
+        start_range = start_range.minute + (start_range.second / 60) + (start_range.hour * 60)
+        if current - start_range > 6:
+            downtime_counter += current - start_range
+            gateway_status = False
+        if 'DOWNTIME' not in os.environ:
+            os.environ['DOWNTIME'] = str(downtime_counter)
+        else:
+            downtime_counter += int(os.environ['DOWNTIME'])
+            os.environ['DOWNTIME'] = str(downtime_counter)
+        uptime_counter = current - downtime_counter
+
+    # Store current time as environmental variable to decrease querysize next request
+    os.environ['STARTRANGE'] = str(timezone.now())
+   
     return render(request, 'dashboard.html',
                   {'node_status': node_statuses,
                    'gateway_status': gateway_status,
-                   'gateway_time': gateway_time})
+                   'gateway_time': gateway_time,
+                   'downtime': downtime_counter,
+                   'uptime': uptime_counter,})
 
 @login_required(login_url='login.html')
 def node_list(request):

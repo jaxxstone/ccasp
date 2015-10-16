@@ -79,14 +79,14 @@
 			            }
 			        },
 			        series: [{
-			            name: "Gateway Uptime",
+			            name: "Gateway Availability",
 			            colorByPoint: true,
 			            data: [{
 			                name: "Online",
-			                y: 100
+			                y: {{ uptime }}
 			            }, {
 			                name: "Offline",
-			                y: 0,
+			                y: {{ downtime }},
 			            }]
 			        }]
 			    });
@@ -102,7 +102,7 @@
 	<div class="row">
 		{% for status in node_status %}
 			<div class="col-md-4">
-			{% if status.node.name %}
+			{% if gateway_status %}
 	  		<div class="panel panel-default">
 	  			<div class="panel-heading">
 	  				<div class="btn-group pull-right">
@@ -110,13 +110,21 @@
 		      		title="Node Status shows the status of your Arduino microcontroller device. If the device is running and has recently communicated with the Gateway, the status will show as Online. If the device is not running or has not recently communicated with the Gateway, the status will show as Offline."></span>
 	        	</div>
 	        	<div class="panel-title">
+	        		{% if status.node.name %}
 							<h5>
-								<span class="label label-success" style="vertical-align:top; align:right">Online</span> {{ status.node.name}}
+								<span class="label label-success" style="vertical-align:top; align:right">Online</span>
+								{{ status.node.name}}
 							</h5>
+							{% else %}
+							<h5>
+								<span class="label label-danger" style="vertical-align:top; align:right">Offline</span>
+								{{ status.name }}
+							</h5>
+							{% endif %}
 						</div>
 					</div>
 					<div class="panel-body">
-						<h5>{{ status.node.description }}</h5>
+						<h5>{% if status.node.description %}{{ status.node.description }}{% else %}{{ status.description }}{% endif %}</h5>
 						{% if status.time_recorded %}
 							<h5><i>Last Updated: {{ status.time_recorded }}</i></h5>
 						{% else %}
@@ -133,12 +141,13 @@
 	        	</div>
 	        	<div class="panel-title">
 							<h5>
-								<span class="label label-danger" style="vertical-align:top; align:right">Offline</span> {{ status.name}}
+								<span class="label label-danger" style="vertical-align:top; align:right">Offline</span>
+								{% if status.node.name %}{{ status.node.name}}{% else %}{{ status.name }}{% endif %}
 							</h5>
 						</div>
 					</div>
 					<div class="panel-body">
-						<h5>{{ status.description }}</h5>
+						<h5>{% if status.node.description %}{{ status.node.description }}{% else %}{{ status.description }}{% endif %}</h5>
 						{% if status.time_recorded %}
 							<h5>Last Updated: {{ status.time_recorded }}</h5>
 						{% else %}

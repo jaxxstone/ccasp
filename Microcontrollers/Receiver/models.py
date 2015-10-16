@@ -14,8 +14,10 @@ class Node(models.Model):
     # Date and time that node first came online
     date_added = models.DateTimeField(default=timezone.now)
     # Label assigned by user
-    name = models.CharField(max_length=75, null=True)
-    description = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=75, null=True,
+                            help_text="Add a descriptive name to uniquely identify this node.")
+    description = models.CharField(max_length=200, null=True,
+                                   help_text="Add a description to help identify this node (location, purpose, etc.).")
 
     def __str__(self):
         '''Override default string behavior'''
@@ -137,10 +139,12 @@ class Sensor(models.Model):
                     ('W', 'Watts'))
     type = models.CharField(max_length=50,
                             choices=sensor_choices,
-                            null=True)
+                            null=True,
+                            help_text="Select a type of sensor from the above list.")
     unit = models.CharField(max_length=50,
                             choices=sensor_units,
-                            null=True)
+                            null=True,
+                            help_text="Select a unit of measurement for this type of sensor. This measurement will be used when reporting and graphing the output of this sensor.")
 
     def __str__(self):
         '''Override default string behavior'''

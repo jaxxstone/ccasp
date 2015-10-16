@@ -44,7 +44,6 @@ from django.core.management import call_command
 
 # Open serial connection and wait
 # TTY PORT defined in Microcontroller/Microcontroller/settings
-# Haven't written logic to grep for /tty/ACM* yet, so adjust manually if needed
 try:
     ser = serial.Serial(settings.TTY_PORT, 9600)
     time.sleep(2)
