@@ -1,0 +1,156 @@
+{% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
+{% block content %}
+
+	<h1>Dashboard <small>Shows system status</small></h1>
+	<hr>
+	{% timezone "America/New_York" %}
+	<!-- Start Gateway Status -->
+	<div class="row">
+	<div class="col-md-6">
+	<h2>Gateway Status <small>Shows the status of the Raspberry Pi Gateway</small></h2>
+		<div class="row">
+		<div class="col-md-6">
+		{% if gateway_status %}
+		  <div class="panel panel-default">
+  			<div class="panel-heading">
+	        <div class="btn-group pull-right">
+		      	<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
+		      	title="Gateway Status shows the status of your Raspberry Pi device. If the device is running and has Internet connectivity, the status will show as Online. If the Raspbery Pi is not running or is not able to connect to the Internet, the status will show as Offline."></span>
+	        </div>
+  				<div class="panel-title">
+					<h5>
+						<span class="label label-success" style="vertical-align:top; align:right">Online</span> Gateway
+					</h5>
+					</div>
+				</div>
+				<div class="panel-body">
+					<h5><i>Last Updated: {{ gateway_time }}</i></h5>
+				</div>
+			</div>
+		{% else %}
+			<div class="panel panel-default">
+  			<div class="panel-heading">
+  				<div class="btn-group pull-right">
+		      	<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
+		      	title="Gateway Status shows the status of your Raspberry Pi device. If the device is running and has Internet connectivity, the status will show as Online. If the Raspbery Pi is not running or is not able to connect to the Internet, the status will show as Offline."></span>
+	        </div>
+					<h5>
+						<span class="label label-danger" style="vertical-align:top; align:right">Offline</span> Gateway
+					</h5>
+				</div>
+				<div class="panel-body">
+					<h5><i>Last Updated: {{ gateway_time }}</i></h5>
+				</div>
+			</div>
+		{% endif %} 
+		</div>
+		</div>
+		</div>
+		<div class="col-md-6">
+			<script>
+					$(function () {
+			    $('#container').highcharts({
+			        chart: {
+			            plotBackgroundColor: null,
+			            plotBorderWidth: null,
+			            plotShadow: false,
+			            type: 'pie'
+			        },
+			        credits: {
+			        	enabled: false,
+			        },
+			        title: {
+			            text: 'Gateway Uptime for ' + new Date().toDateString(),
+			        },
+			        tooltip: {
+			            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			        },
+			        plotOptions: {
+			            pie: {
+			                allowPointSelect: true,
+			                cursor: 'pointer',
+			                dataLabels: {
+			                    enabled: true,
+			                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+			                    style: {
+			                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+			                    }
+			                }
+			            }
+			        },
+			        series: [{
+			            name: "Gateway Uptime",
+			            colorByPoint: true,
+			            data: [{
+			                name: "Online",
+			                y: 100
+			            }, {
+			                name: "Offline",
+			                y: 0,
+			            }]
+			        }]
+			    });
+			});
+			</script>
+			<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+		</div>
+	</div>
+	<!-- End Gateway Status -->
+	<hr>
+	<!-- Start Node Status -->
+	<h2>Node Status <small>Shows the current status of end nodes</small></h2>
+	<div class="row">
+		{% for status in node_status %}
+			<div class="col-md-4">
+			{% if status.node.name %}
+	  		<div class="panel panel-default">
+	  			<div class="panel-heading">
+	  				<div class="btn-group pull-right">
+		      		<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
+		      		title="Node Status shows the status of your Arduino microcontroller device. If the device is running and has recently communicated with the Gateway, the status will show as Online. If the device is not running or has not recently communicated with the Gateway, the status will show as Offline."></span>
+	        	</div>
+	        	<div class="panel-title">
+							<h5>
+								<span class="label label-success" style="vertical-align:top; align:right">Online</span> {{ status.node.name}}
+							</h5>
+						</div>
+					</div>
+					<div class="panel-body">
+						<h5>{{ status.node.description }}</h5>
+						{% if status.time_recorded %}
+							<h5><i>Last Updated: {{ status.time_recorded }}</i></h5>
+						{% else %}
+							<h5><i>Last Updated: No data found</i></h5>
+						{% endif %}
+					</div>
+				</div>
+			{% else %} 
+				<div class="panel panel-default">
+	  			<div class="panel-heading">
+	  				<div class="btn-group pull-right">
+		      		<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
+		      		title="Node Status shows the status of your Arduino microcontroller device. If the device is running and has recently communicated with the Gateway, the status will show as Online. If the device is not running or has not recently communicated with the Gateway, the status will show as Offline."></span>
+	        	</div>
+	        	<div class="panel-title">
+							<h5>
+								<span class="label label-danger" style="vertical-align:top; align:right">Offline</span> {{ status.name}}
+							</h5>
+						</div>
+					</div>
+					<div class="panel-body">
+						<h5>{{ status.description }}</h5>
+						{% if status.time_recorded %}
+							<h5>Last Updated: {{ status.time_recorded }}</h5>
+						{% else %}
+							<h5><i>Last Updated: No data found for {{ status }}</i></h5>
+						{% endif %}
+					</div>
+				</div>
+			{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+	{% endtimezone %}
+	<!-- End Node Status -->	
+	
+{% endblock content %}
