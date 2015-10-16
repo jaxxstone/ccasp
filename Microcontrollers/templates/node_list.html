@@ -2,9 +2,17 @@
 {% load staticfiles %}
 {% block content %}
 
-<h1>Node List <small>Shows the end nodes and sensors in network</small></h1>
-<hr>
+<div class="row" style="background-color:#222">
+	<div class="col-md-12">
+		<h1 style="color:#777">Node List <small>Shows the end nodes and sensors in network</small></h1>
+	</div>
+</div>
 <div class="row">
+	<div class="row">
+		<div class="col-md-6">
+			<h2>Reports <small>Select a sensor and date rate to view the report</small></h2>
+		</div>
+	</div>
   {% for node in nodes %}
   <div class="col-sm-4 col-md-3">
 		<div class="panel panel-default">

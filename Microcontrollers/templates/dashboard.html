@@ -1,8 +1,11 @@
 {% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
 {% block content %}
 
-	<h1>Dashboard <small>Shows system status</small></h1>
-	<hr>
+	<div class="row" style="background-color:#222">
+		<div class="col-md-12">
+			<h1 style="color:#777">Dashboard</h1>
+		</div>
+	</div>
 	{% timezone "America/New_York" %}
 	<!-- Start Gateway Status -->
 	<div class="row">
