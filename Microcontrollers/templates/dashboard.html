@@ -1,102 +1,111 @@
 {% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
 {% block content %}
 
-	<div class="row" style="background-color:#222">
-		<div class="col-md-12">
-			<h1 style="color:#777">Dashboard</h1>
+	<div class="well">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Dashboard</small></h1>
+			</div>
 		</div>
 	</div>
 	{% timezone "America/New_York" %}
 	<!-- Start Gateway Status -->
 	<div class="row">
-	<div class="col-md-6">
-	<h2>Gateway Status <small>Shows the status of the Raspberry Pi Gateway</small></h2>
-		<div class="row">
 		<div class="col-md-6">
-		{% if gateway_status %}
-		  <div class="panel panel-default" style="box-shadow: 10px 10px 5px #888888;">
-  			<div class="panel-heading">
-	        <div class="btn-group pull-right">
-		      	<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
-		      	title="Gateway Status shows the status of your Raspberry Pi device. If the device is running and has Internet connectivity, the status will show as Online. If the Raspbery Pi is not running or is not able to connect to the Internet, the status will show as Offline."></span>
-	        </div>
-  				<div class="panel-title">
-					<h5>
-						<span class="label label-success" style="vertical-align:top; align:right">Online</span> Gateway
-					</h5>
+			<h2>Gateway Status <small>Shows the status of the Raspberry Pi Gateway</small></h2>
+				<div class="row">
+					<div class="col-md-6">
+					{% if gateway_status %}
+					  <div class="panel panel-primary" style="box-shadow: 5px 5px 5px #888888;">
+			  			<div class="panel-heading">
+				        <div class="btn-group pull-right">
+					      	<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+					      	title="Gateway Status" data-content="Shows whether your Raspberry Pi device is running and has Internet connectivity."></span>
+				        </div>
+			  				<div class="panel-title">
+								<h5>
+									<span class="label label-success" style="vertical-align:top; align:right">Online</span> Gateway
+								</h5>
+								</div>
+							</div>
+							<div class="panel-body">
+								<h5><i>Last Updated: {{ gateway_time }}</i></h5>
+							</div>
+						</div>
+					{% else %}
+						<div class="panel panel-primary" style="box-shadow: 5px 5px 5px #888888;">
+			  			<div class="panel-heading">
+			  				<div class="btn-group pull-right">
+					      	<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+					      	title="Gateway Status" data-content="Shows whether your Raspberry Pi device is running and has Internet connectivity."></span>
+				        </div>
+								<h5>
+									<span class="label label-danger" style="vertical-align:top; align:right">Offline</span> Gateway
+								</h5>
+							</div>
+							<div class="panel-body">
+								<h5><i>Last Updated: {{ gateway_time }}</i></h5>
+							</div>
+						</div>
+					{% endif %} 
 					</div>
 				</div>
-				<div class="panel-body">
-					<h5><i>Last Updated: {{ gateway_time }}</i></h5>
-				</div>
 			</div>
-		{% else %}
-			<div class="panel panel-default" style="box-shadow: 10px 10px 5px #888888;">
-  			<div class="panel-heading">
-  				<div class="btn-group pull-right">
-		      	<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
-		      	title="Gateway Status shows the status of your Raspberry Pi device. If the device is running and has Internet connectivity, the status will show as Online. If the Raspbery Pi is not running or is not able to connect to the Internet, the status will show as Offline."></span>
-	        </div>
-					<h5>
-						<span class="label label-danger" style="vertical-align:top; align:right">Offline</span> Gateway
-					</h5>
-				</div>
-				<div class="panel-body">
-					<h5><i>Last Updated: {{ gateway_time }}</i></h5>
-				</div>
-			</div>
-		{% endif %} 
-		</div>
-		</div>
-		</div>
-		<div class="col-md-4">
-			<script>
+			<div class="col-md-6">
+				<script>
 					$(function () {
-			    $('#container').highcharts({
-			        chart: {
-			            plotBackgroundColor: 'rgba(224,224,224,0.0)',
-			            backgroundColor: 'rgba(224,224,224,0.0)',
-			            plotBorderWidth: null,
-			            plotShadow: false,
-			            type: 'pie'
-			        },
-			        credits: {
-			        	enabled: false,
-			        },
-			        title: {
-			            text: 'Gateway Uptime for ' + new Date().toDateString(),
-			        },
-			        tooltip: {
-			            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-			        },
-			        plotOptions: {
-			            pie: {
-			                allowPointSelect: true,
-			                cursor: 'pointer',
-			                dataLabels: {
-			                    enabled: true,
-			                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-			                    style: {
-			                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-			                    }
-			                }
-			            }
-			        },
-			        series: [{
-			            name: "Gateway Availability",
-			            colorByPoint: true,
-			            data: [{
-			                name: "Online",
-			                y: {{ uptime }}
-			            }, {
-			                name: "Offline",
-			                y: {{ downtime }},
-			            }]
-			        }]
-			    });
-			});
-			</script>
-			<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+				    $('#container').highcharts({
+				        chart: {
+				            plotBackgroundColor: 'rgba(224,224,224,0.0)',
+				            backgroundColor: 'rgba(224,224,224,0.0)',
+				            plotBorderWidth: null,
+				            plotShadow: false,
+				            type: 'pie',
+				            options3d: {
+				                enabled: true,
+				                alpha: 45,
+				                beta: 0,
+				            }
+				        },
+				        credits: {
+				        	enabled: false,
+				        },
+				        title: {
+				            text: 'Gateway Uptime for ' + new Date().toDateString(),
+				        },
+				        tooltip: {
+				            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				        },
+				        plotOptions: {
+				            pie: {
+				                allowPointSelect: true,
+				                cursor: 'pointer',
+				                depth: 35,
+				                dataLabels: {
+				                    enabled: true,
+				                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+				                    style: {
+				                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+				                    }
+				                },
+				            }
+				        },
+				        series: [{
+				            name: "Gateway Availability",
+				            colorByPoint: true,
+				            data: [{
+				                name: "Online",
+				                y: {{ uptime }}
+				            }, {
+				                name: "Offline",
+				                y: {{ downtime }},
+				            	}]
+					        }]
+					    });
+					});
+				</script>
+			<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
+			</div>
 		</div>
 	</div>
 	<!-- End Gateway Status -->
@@ -111,11 +120,11 @@
 		{% for status in node_status %}
 			<div class="col-md-4">
 			{% if gateway_status %}
-	  		<div class="panel panel-default" style="box-shadow: 10px 10px 5px #888888;">
+	  		<div class="panel panel-primary" style="box-shadow: 5px 5px 5px #888888;">
 	  			<div class="panel-heading">
 	  				<div class="btn-group pull-right">
-		      		<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
-		      		title="Node Status shows the status of your Arduino microcontroller device. If the device is running and has recently communicated with the Gateway, the status will show as Online. If the device is not running or has not recently communicated with the Gateway, the status will show as Offline."></span>
+			      	<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+			      	title="Microcontroller Status" data-content="Shows whether your Arduino Microcontroller device is running and can communicate with the Gateway."></span>
 	        	</div>
 	        	<div class="panel-title">
 	        		{% if status.node.name %}

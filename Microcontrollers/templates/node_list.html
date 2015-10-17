@@ -2,24 +2,21 @@
 {% load staticfiles %}
 {% block content %}
 
-<div class="row" style="background-color:#222">
-	<div class="col-md-12">
-		<h1 style="color:#777">Node List <small>Shows the end nodes and sensors in network</small></h1>
+<div class="well">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Node List<br><small>Shows the end nodes, sensors, and list of available reports</small></h1>
+		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="row">
-		<div class="col-md-6">
-			<h2>Reports <small>Select a sensor and date range to view the report</small></h2>
-		</div>
-	</div>
-  {% for node in nodes %}
+	{% for node in nodes %}
   <div class="col-sm-4 col-md-3">
-		<div class="panel panel-default" style="box-shadow: 10px 10px 5px #888888;">
+		<div class="panel panel-primary" style="box-shadow: 5px 5px 5px #888888;"> 
 		  <div class="panel-heading">
  				<div class="btn-group pull-right">
-      		<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
-      		title="{% if node.0.description %}{{ node.0.description }}{% else %}No description{% endif %}"></span>
+      				<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+      				title="{{ node.0 }} Tooltip" data-content="{% if node.0.description %}{{ node.0.description }}{% else %}No description{% endif %}"></span>
        	</div>
 			  <div class="panel-title">
 			    <h5>{% if node.0.name %}{{ node.0.name }}{% else %}{{ node.0 }}{% endif %}</h5>

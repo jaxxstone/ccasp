@@ -1,10 +1,12 @@
 {% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
 {% block content %}
 
-<div class="row" style="background-color:#222">
-  <div class="col-md-12">
-    <h1 style="color:#777">Recent Activity <small>Shows the {{ records|length }}  Most Recent Updates</small></h1>
-  </div>
+<div class="well">
+	<div class="row">
+		<div class="col-md-12">
+    <h1>Recent Activity<br><small>Shows the {{ records|length }}  Most Recent Updates</small></h1>
+		</div>
+	</div>
 </div>
 <div class="row">
   <div class="col-md-12" style="padding-top:15px">

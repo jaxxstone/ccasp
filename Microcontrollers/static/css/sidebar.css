@@ -1,6 +1,6 @@
 body,html{
     height: 100%;
-    background-color:rgba(224,224,224,0.3);
+    /*background-color:rgba(224,224,224,0.3);*/
 }
 
 /* remove outer padding */
@@ -9,16 +9,20 @@ body,html{
     margin: 0px;
 }
 
+.popover {
+	text-align: center;
+}
+
 /* style for affixed sidebar */
 .affix {
    	padding: 0px;
    	width: 200px;
 }
 
-.panel-default>.panel-heading {
+/*.panel-default>.panel-heading {
 	background-color: #333;
 	color:#FFF;
-}
+}*/
 
 /*Remove rounded coners*/
 

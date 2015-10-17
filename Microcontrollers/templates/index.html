@@ -15,16 +15,15 @@
     <title>Cloud Controlled Automation</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/jumbotron.css' %}" rel="stylesheet">
-
   </head>
-
   <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+		<!-- Navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -36,9 +35,8 @@
           <a class="navbar-brand" href="#">Cloud Controlled Automation</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          
           <form class="navbar-form navbar-right" method="post" action="{% url 'django.contrib.auth.views.login' %}">
-	    {% csrf_token %}
+	    			{% csrf_token %}
             <div class="form-group">
               <input type="text" id="username" name="username" placeholder="NetID" class="form-control">
             </div>
@@ -48,25 +46,24 @@
             <button type="submit" class="btn btn-success">Sign in</button>
             <input type="hidden" name="next" value="{{ next }}" />
           </form>             
-        </div><!--/.navbar-collapse -->
+        </div>
       </div>
     </nav>
-
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <!-- End navbar -->
+    <!-- Main jumbotron -->
     <div class="jumbotron">
       <div class="container">
         <h1>Cloud Controlled Automation Senior Project</h1>
-	{%if form.errors %}
-	<p> Invalid username/password combination, please try again </p>
-	{% endif %}
+				{%if form.errors %}
+					<p> Invalid username/password combination, please try again </p>
+				{% endif %}
         <p>This is the website for the CCA management system.</p>
         <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
       </div>
     </div>
-
+    <!-- End jumbotron -->
+		<!-- Information container -->
     <div class="container">
-      <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
           <h2>Project Members</h2>
@@ -77,20 +74,19 @@
           <h2>About the Project</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-	</div>
+				</div>
         <div class="col-md-4">
           <h2>Documentation</h2>
           <p>Documentation generated from project source with <a href="http://epydoc.sourceforge.net/">Epydoc</a>.</p>
           <p><a class="btn btn-default" href="{% static 'docs/index.html' %}" role="button">View documentation &raquo;</a></p>
         </div>
       </div>
-
       <hr>
-
       <footer>
         <p>&copy; CCA 2015</p>
       </footer>
-    </div> <!-- /container -->
+    </div> 
+    <!-- End information container -->
 
 
     <!-- Bootstrap core JavaScript
