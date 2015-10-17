@@ -1,6 +1,6 @@
 body,html{
     height: 100%;
-    /*background-color:rgba(224,224,224,0.3);*/
+    background-color:#FFFAFA;
 }
 
 /* remove outer padding */
@@ -11,6 +11,14 @@ body,html{
 
 .popover {
 	text-align: center;
+}
+
+.panel-primary {
+	box-shadow: 3px 3px 3px #888888;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+	background-color: #ecf0f1;
 }
 
 /* style for affixed sidebar */
