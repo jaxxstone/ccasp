@@ -25,7 +25,7 @@ TEMPLATE_DEBUG = True
 
 # Application definition
 INSTALLED_APPS = (
-    #'suit',
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,14 +71,14 @@ TEMPLATES = [
 ]
 
 # for suit
-#TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-#    'django.core.context_processors.request',
-#)
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)
 
 # Django Suit configuration example
-#SUIT_CONFIG = {
+SUIT_CONFIG = {
     # header
-    #'ADMIN_NAME': 'Cloud Controlled Automation',
+    'ADMIN_NAME': 'Cloud Controlled Automation',
     # 'HEADER_DATE_FORMAT': 'l, j. F Y',
     # 'HEADER_TIME_FORMAT': 'H:i',
 
@@ -103,7 +103,7 @@ TEMPLATES = [
 
     # misc
     # 'LIST_PER_PAGE': 15
-#}
+}
 
 WSGI_APPLICATION = 'Microcontrollers.wsgi.application'
 

@@ -321,24 +321,27 @@ def dashboard(request):
         else:
             node_statuses.append(node)
     
-    start_range = None
     # Calculate gaps in existing records
     # Get start range from environmental variable
+    start_range = None
     if 'STARTRANGE' not in os.environ:
-        os.environ['STARTRANGE'] = str(timezone.datetime.date(timezone.datetime.today()))
+        os.environ['STARTRANGE'] = str(timezone.datetime.date(
+            timezone.datetime.today()))
     start_range = parser.parse(os.environ['STARTRANGE'])
     
     # Make sure environmental variable is still reflecting today's date
     if start_range.day != timezone.now().day:
         start_range = timezone.datetime.date(timezone.datetime.today())
         os.environ['STARTRANGE'] = str(start_range)
+        os.environ['DOWNTIME'] = '0'
         
     # Add one day to start range to create end range
     end_range = timezone.timedelta(days=1) + timezone.datetime.date(start_range)
     
     print 'Start/End Range', start_range, end_range
     # Retrieve records within start and end range
-    records = Record.objects.filter(time_recorded__range=[start_range, end_range])
+    records = Record.objects.filter(time_recorded__range=[start_range,
+                                                          end_range])
     downtime_counter = 0
     
     # There's new records, check gaps
@@ -393,7 +396,8 @@ def dashboard(request):
             os.environ['DOWNTIME'] = str(downtime_counter)
         uptime_counter = current - downtime_counter
 
-    # Store current time as environmental variable to decrease querysize next request
+    # Store current time as environmental variable to decrease querysize next
+    # request
     os.environ['STARTRANGE'] = str(timezone.now())
    
     return render(request, 'dashboard.html',
