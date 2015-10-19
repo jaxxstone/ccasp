@@ -295,7 +295,6 @@ def overview(request):
     '''
     # records will hold list of records for each node
     records = Record.objects.values('node__name', 'sensor__name', 'value', 'time_recorded').order_by('time_recorded').reverse()[:100]
-
     # Return rendered template
     return render(request, 'overview.html',
                   {'records': records,})
@@ -336,7 +335,7 @@ def dashboard(request):
         os.environ['DOWNTIME'] = '0'
         
     # Add one day to start range to create end range
-    end_range = timezone.timedelta(days=1) + timezone.datetime.date(start_range)
+    end_range = timezone.timedelta(days=1) + timezone.datetime.date(timezone.now())
     
     print 'Start/End Range', start_range, end_range
     # Retrieve records within start and end range
