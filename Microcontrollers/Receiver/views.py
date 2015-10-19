@@ -14,18 +14,6 @@ from dateutil import parser
 from Microcontrollers import settings
 
 @login_required(login_url='login.html')
-def report_list(request):
-    '''
-    Generates a list of Nodes and the report types (daily, weekly, etc.)
-    available
-    @param request: the HTTP GET request
-    @return: rendered report_list.html with a list of Node objects
-    '''
-    nodes = Node.objects.all()
-    return render(request, 'report_list.html',
-                  {'nodes': nodes})
-
-@login_required(login_url='login.html')
 def daily_report(request, nodeid=None, sensorid=None):
     '''
     Return all records from today.
