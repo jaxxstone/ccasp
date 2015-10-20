@@ -87,7 +87,7 @@ while True:
             logger.info('Unable to add record')
 
     # Update frequency
-    time.sleep(10)
+    time.sleep(60)
 
 # Close serial connection
 ser.close()

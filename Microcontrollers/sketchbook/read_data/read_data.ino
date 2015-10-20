@@ -13,7 +13,7 @@ const int tempPin = A0;
 const int humidityPin = A1;
 const int moisturePin = A2;
 /* Update frequency to transmit data (in seconds) */
-const int updateFrequency = 5;
+const int updateFrequency = 60;
 /* Store last time that data was transmitted */
 time_t lastTime = now();
 
@@ -59,6 +59,8 @@ void add_data()
       /* Moisture pin */
       write_moisture();
       delay(5);
+      // Set last updated time to current time
+      lastTime = now();
     } 
 }
 
@@ -74,8 +76,6 @@ void write_moisture()
   // 0 is 100%, 1023 is 0%
   sensorVal = map(sensorVal, 0, 1023, 100, 0);
   delay(2);
-  // Set last updated time to current time
-  lastTime = now();
   // Write sensor ID
   delay(2);
   Serial.println(moisturePin);
@@ -93,8 +93,6 @@ void write_humidity()
   delay(2);
   // Read humidity using dht library
   float humidity = dht.readHumidity();
-  // Set last updated time to current time
-  lastTime = now();
   // Write sensor ID
   delay(2);
   Serial.println(humidityPin);
@@ -112,8 +110,6 @@ void write_temperature()
   delay(2);
   // Read temperature in celsius using dht library
   float temperature = dht.readTemperature();
-  // Set last updated time to current time
-  lastTime = now();
   // Write sensor ID
   delay(2);
   Serial.println(tempPin);
