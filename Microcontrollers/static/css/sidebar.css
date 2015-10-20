@@ -3,6 +3,20 @@ body,html{
     background-color:#FFFAFA;
 }
 
+/* bootstrap carousel */
+.carousel {
+	background: #FFFAFA;
+}
+.carousel-control.left {
+	background-image: none;
+}
+.carousel-control.right {
+	background-image: none;
+}
+.carousel-control {
+	color: #2c3e50;
+}
+
 /* remove outer padding */
 .main .row{
     padding: 0px;

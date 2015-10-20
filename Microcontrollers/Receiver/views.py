@@ -419,4 +419,18 @@ def node_list(request):
 
 @login_required(login_url='login.html')
 def admin(request):
+    '''
+    Return a wrapped view of the admin panel in an iframe
+    @param request: the HTTP GET request
+    @return: rendered admin.html
+    '''
     return render(request, 'admin.html')
+
+@login_required(login_url='login.html')
+def media(request):
+    '''
+    Return a view of project images
+    @param request: the HTTP GET request
+    @return: rendered media.html
+    '''
+    return render(request, 'media.html')
