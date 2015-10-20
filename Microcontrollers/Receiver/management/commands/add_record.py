@@ -8,35 +8,36 @@ from django.core.management.base import BaseCommand
 class Command(BaseCommand):
     '''Default class for Django's management commands'''
     help = "adds a new Record to the database"
-
+    
     def add_arguments(self, parser):
         parser.add_argument('args')
 
     def handle(self, *args, **options):
+        # Lookups for sensor pin number
+        types = {'14': 'Temperature', '15': 'Humidity', '16': 'Soil Moisture'}
+        units = {'14': 'C', '15': '%', '16': '%'}
+        
         # Get node UUID from arg tuple
-        node_id = int(args[0])
+        sensor_id = str(args[0])
         # Get value from arg tuple
-        args = args[1]
-
-        # Create float from arg
-        out = ''
-        for arg in args:
-            out += arg
-        out = float(out)
-
+        value = args[1]
+        
         # Create new record and add value
         new_record = Record()
-        new_record.value = out
+        new_record.value = value
+
         try:
-            new_record.sensor = Sensor.objects.get(pk=node_id)
+            new_record.sensor = Sensor.objects.get(pk=sensor_id)
         except:
             new_sensor = Sensor()
+            new_sensor.pk = sensor_id
             new_sensor.node = Node.objects.get(pk=1)
-            new_sensor.name = "Auto Add"
+            new_sensor.name = types[sensor_id]
+            new_sensor.type = types[sensor_id]
+            new_sensor.unit = units[sensor_id]
             new_sensor.save()
             new_record.sensor = new_sensor
-
-        print str(new_record.sensor) + " has been added"
+            print "Sensor " + str(new_record.sensor) + " has been added"
 
         # Try to match node to existing node
         # objects.get() raises DNE exception if not found
@@ -45,9 +46,15 @@ class Command(BaseCommand):
             new_record.node = Node.objects.get(pk=1)
         except:
             new_node = Node()
-            new_node.node_id = node_id
+            new_node.node_id = 1
             new_node.save()
             new_record.node = new_node
 
-        print str(new_record) + " has been added"
+        print "Record " + str(new_record) + " has been added for"
+        print new_record.sensor.name
         new_record.save()
+
+    def convert_to_fahr(temperature):
+        temperature = (float(val) * (9.0/5.0)) + 32.0
+        temperature = str(val)
+        return temperature

@@ -1,31 +1,26 @@
 #include <Time.h>
-int pins[] = {0, 0, 0, 3, 4};
-int pinCount = 5;
+#include <DHT.h>
 
+/* Digital pins for sensors */
+// Temperature/Humidity sensor
+// https://github.com/adafruit/DHT-sensor-library/
+#define DHTPIN 2 // digital pin 2
+#define DHTTYPE DHT11 // model DHT11
+DHT dht(DHTPIN, DHTTYPE); // initialize
+
+/* Analog pins for sensors */
 const int tempPin = A0;
-
-const int numReadings = 100;
-
-float readings[numReadings];
-
-int counter = 0;
-int randomPin = 1;
-
+const int humidityPin = A1;
+const int moisturePin = A2;
+/* Update frequency to transmit data (in seconds) */
+const int updateFrequency = 60;
+/* Store last time that data was transmitted */
 time_t lastTime = now();
-  
+
 void setup()
 {
   Serial.begin(9600);
-  for (int thisPin = 2; thisPin < pinCount; thisPin++)
-    {
-      pinMode(pins[thisPin], OUTPUT); 
-    }
-    
-  for (int i = 0; i < 100; i++)
-    {
-      readings[i] = -1.0;
-    }
-    
+  dht.begin();
 }
   
 void loop()
@@ -34,96 +29,93 @@ void loop()
   // Serial.available() > 0 means there's bytes to read
   if (Serial.available() > 0)
     {
-      // pin will hold the pin requested by the server
-      int pin = Serial.parseInt();
+      // command will hold the command requested by the server
+      int command = Serial.parseInt();
       // Check that it's valid
-      if (pin > 0)
+      if (command > 0)
 	{
-          // Signal 5 requests status -- which pins are online
-	  if (pin == 5)
+          // command 6 requests data to be transmitted to gateway
+	  if (command == 6)
 	    {
-	      for (int thisPin = 3; thisPin < pinCount; thisPin++)
-		{
-		  int toSend = pins[thisPin];
-		  delay(2);
-		  Serial.print(toSend);
-            
-		  toSend = digitalRead(thisPin);
-		  delay(2);
-		  Serial.print(toSend);
-            
-		  Serial.flush();
-		}
-	    }
-          // Signal 6 requests data from Arduino
-	  else if (pin == 6)
-	    {
-	      dump_data();
+	      add_data();
               delay(2);
-	    }
-          // Otherwise it tries to toggle the pin
-	  else if (pin != 101)
-	    {
-	      digitalWrite(pins[pin], HIGH  ^ digitalRead(pins[pin]));
 	    }
 	}
     }
-  // Otherwise read and store sensor value(s)
-  else
-    {
-      add_data();
-    }
 }
 
-// Tries to read and store a temperature value every minute
+/* Function to read analog inputs and write values to gateway */
 void add_data()
 {
-  // Make sure we haven't updated in the past minute
-  if ((now() - lastTime) > 60)
+  // Make sure time delta is >= update frequency
+  if ((now() - lastTime) >= 60)
     {
-      // Read the sensor value
-      int sensorVal = analogRead(tempPin);
-      // Convert
-      float voltage = (sensorVal/1024.0) * 5.0;
-      float temperature = (voltage - 0.5) * 100;
-      // Set last updated time to current time
-      lastTime = now();
-      // Store and increment array counter
-      readings[counter++] = temperature;
+      /* Temperature pin */
+      write_temperature();
+      /* Humidity pin */
+      write_humidity();
+      /* Moisture pin */
+      write_moisture();
     } 
 }
 
-// Tries to send data to server
-void dump_data()
+/* Function to read analog input from moisture pin and write to gateway 
+ * Function converts analog value to useable value
+ */
+void write_moisture()
 {
-  // Iterate over pin array
-  for (int i = 0; i < numReadings; i++)
-    {
-      // If array[i] has a value > 0, send it
-      if (readings[i] > 0)
-	{
-          delay(2);
-          // "Send" node UUID
-          Serial.println(randomPin++);
-          delay(2);
-          
-          // Model 5 nodes, set to 1 if > 5
-          if (randomPin > 5)
-          {
-            randomPin = 1;
-          }
-          
-          // Print the reading
-          Serial.println(readings[i]);
-          delay(2); 
-	}
-      // "Remove" the value that was just sent
-      readings[i] = -1;
-    }
-  // Reset counter
-  counter = 0;
+  delay(2);
+  int sensorVal = analogRead(moisturePin);
+  // Convert to voltage
+  float voltage = (sensorVal/1024.0) * 5.0;
+  // TODO
+  // Set last updated time to current time
+  lastTime = now();
+  // Write sensor ID
+  delay(2);
+  Serial.println(moisturePin);
+  delay(2);
+  // Write value
+  Serial.println(sensorVal);
   delay(2);
 }
 
+/* Function to read analog input from humidity pin and write to gateway 
+ * Function converts analog value to useable value
+ */
+void write_humidity()
+{
+  delay(2);
+  // Read humidity using dht library
+  float humidity = dht.readHumidity();
+  // Set last updated time to current time
+  lastTime = now();
+  // Write sensor ID
+  delay(2);
+  Serial.println(humidityPin);
+  delay(2);
+  // Write value
+  Serial.println(humidity);
+  delay(2);
+}
+
+/* Function to read analog input from temperature pin and write to gateway 
+ * Function converts analog value to useable value
+ */
+void write_temperature()
+{
+  delay(2);
+  // Read temperature in celsius using dht library
+  float temperature = dht.readTemperature();
+  // Set last updated time to current time
+  lastTime = now();
+  // Write sensor ID
+  delay(2);
+  Serial.println(tempPin);
+  delay(2);
+  // Write value
+  Serial.println(temperature);
+  delay(2);
+}
   
 

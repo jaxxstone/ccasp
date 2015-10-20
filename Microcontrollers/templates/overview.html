@@ -2,38 +2,38 @@
 {% block content %}
 
 <div class="well">
-	<div class="row">
-		<div class="col-md-12">
-    <h1>Recent Activity<br><small>Shows the {{ records|length }}  Most Recent Updates</small></h1>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Recent Activity<br><small>Shows the {{ records|length }}  Most Recent Updates</small></h1>
+    </div>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-12" style="padding-top:15px">
     <div class="table-responsive">
       <table id="overview" class="table table-striped">
-				<thead>
-				  <tr>
-				    <th>#</th>
-				    <th>Node</th>
-				    <th>Sensor</th>
-				    <th>Value</th>
-				    <th>Date/Time</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  {% timezone "America/New_York" %}
-				  {% for record in records %}
-				  <tr>
-				    <td>{{ forloop.counter }}</td>
-				    <td>{% if record.node__name %}{{ record.node__name }}{% else %}{{ record.node }}{% endif %}</td>
-				    <td>{% if record.sensor__name %}{{ record.sensor__name }}{% else %}{{ record.sensor }}{% endif %}</td>
-				    <td>{{ record.value }}</td>
-				    <td>{{ record.time_recorded }}</td>
-				  </tr>
-				  {% endfor %}
-				  {% endtimezone %}
-				</tbody>
+	<thead>
+	  <tr>
+	    <th>#</th>
+	    <th>Node</th>
+	    <th>Sensor</th>
+	    <th>Value</th>
+	    <th>Date/Time</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  {% timezone "America/New_York" %}
+	  {% for record in records %}
+	  <tr>
+	    <td>{{ forloop.counter }}</td>
+	    <td>{% if record.node__name %}{{ record.node__name }}{% else %}{{ record.node }}{% endif %}</td>
+	    <td>{% if record.sensor__name %}{{ record.sensor__name }}{% else %}{{ record.sensor }}{% endif %}</td>
+	    <td>{{ record.value }}{% if record.sensor__unit %}{{ record.sensor__unit }}{% endif %}</td>
+	    <td>{{ record.time_recorded }}</td>
+	  </tr>
+	  {% endfor %}
+	  {% endtimezone %}
+	</tbody>
       </table>
     </div>
   </div>

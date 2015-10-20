@@ -64,19 +64,16 @@ while True:
         # Read in sensor UUID
         try:
             sensor = ser.readline()
+            sensor = sensor.rstrip('\r\n')
             time.sleep(1)
         except:
             logger.info('Unable to read from serial')
             continue
+        
+        # Read in sensor values
         try:
-            # Read in sensor values
             val = ser.readline()
-            # Parse and create Fahrenheit value
-            val = val.replace('\n', '')
-            val = val.replace('\r', '')
-            val = (float(val) * (9.0/5.0)) + 32.0
-            val = val - float(sensor) * 10
-            val = str(val)
+            val = val.rstrip('\r\n')
         except:
             logger.info('Unable to read values')
             continue
@@ -89,8 +86,8 @@ while True:
         except:
             logger.info('Unable to add record')
 
-        # Update frequency
-        time.sleep(60)
+    # Update frequency
+    time.sleep(60)
 
 # Close serial connection
 ser.close()

@@ -126,7 +126,7 @@ class Sensor(models.Model):
     # Node that this Sensor is associated with
     node = models.ForeignKey(Node)
     # Type of sensor
-    sensor_choices = (('Air Temperature', 'Air Temperature'), 
+    sensor_choices = (('Temperature', 'Temperature'), 
                       ('Humidity', 'Humidity'),
                       ('Soil Moisture', 'Soil Moisture'),
                       ('Rain', 'Rain'),
