@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from dateutil import parser
 from Microcontrollers import settings
 
+def convert_to_fahrenheit(value):
+    return float(value) * 1.8 + 32
+
 @login_required(login_url='login.html')
 def daily_report(request, nodeid=None, sensorid=None):
     '''
@@ -38,9 +41,14 @@ def daily_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time (in ms) for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
+        
+        # Check if it's Fahrenheit or Celsius
+        value = record.value
+        if sensor_unit == 'F':
+            value = convert_to_fahrenheit(value)
         # Append to list
         # Highcharts requires [time, value] format for datetime graph
-        values.append([my_time, record.value])
+        values.append([my_time, value])
         # Add node and sensor values list to main list
     my_node_list.append([sensor.id, values])
 
@@ -77,9 +85,14 @@ def weekly_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time (in ms) for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
+        
+        # Check if it's Fahrenheit or Celsius
+        value = record.value
+        if sensor_unit == 'F':
+            value = convert_to_fahrenheit(value)
         # Append to list
         # Highcharts requires [time, value] format for datetime graph
-        values.append([my_time, record.value])
+        values.append([my_time, value])
         # Add node and sensor values list to main list
     my_node_list.append([sensor.id, values])
 
@@ -116,9 +129,14 @@ def monthly_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time (in ms) for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
+        
+        # Check if it's Fahrenheit or Celsius
+        value = record.value
+        if sensor_unit == 'F':
+            value = convert_to_fahrenheit(value)
         # Append to list
         # Highcharts requires [time, value] format for datetime graph
-        values.append([my_time, record.value])
+        values.append([my_time, value])
         # Add node and sensor values list to main list
     my_node_list.append([sensor.id, values])
 
@@ -155,9 +173,14 @@ def yearly_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time (in ms) for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
+        
+        # Check if it's Fahrenheit or Celsius
+        value = record.value
+        if sensor_unit == 'F':
+            value = convert_to_fahrenheit(value)
         # Append to list
         # Highcharts requires [time, value] format for datetime graph
-        values.append([my_time, record.value])
+        values.append([my_time, value])
         # Add node and sensor values list to main list
     my_node_list.append([sensor.id, values])
 
@@ -251,9 +274,14 @@ def custom_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
+        
+        # Check if it's Fahrenheit or Celsius
+        value = record.value
+        if unit == 'F':
+            value = convert_to_fahrenheit(value)
         # Append to list
         # Highcharts requires [time, value] format for datetime graph
-        values.append([my_time, record.value])
+        values.append([my_time, value])
 
     # Add node and sensor values list to main list
     my_node_list.append([sensor.id, values])

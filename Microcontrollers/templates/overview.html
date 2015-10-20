@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
+{% extends 'base.html' %} {% load tz %} {% load static from staticfiles %} {% load tags %}
 {% block content %}
 
 <div class="well">
@@ -28,7 +28,13 @@
 	    <td>{{ forloop.counter }}</td>
 	    <td>{% if record.node__name %}{{ record.node__name }}{% else %}{{ record.node }}{% endif %}</td>
 	    <td>{% if record.sensor__name %}{{ record.sensor__name }}{% else %}{{ record.sensor }}{% endif %}</td>
-	    <td>{{ record.value }} {% if record.sensor__unit %}{{ record.sensor__unit }}{% endif %}</td>
+	    {% if record.sensor__unit == 'F' %}
+ 	    	<td>{% convert_to_fahrenheit record.value %} &#8457</td>
+	    {% elif record.sensor__unit == 'C' %}
+	    	<td>{{ record.value }} &#8451</td>
+	    {% else %}
+	    	<td>{{ record.value }} {% if record.sensor__unit %}{{ record.sensor__unit }}{% endif %}</td>
+	    {% endif %}
 	    <td>{{ record.time_recorded }}</td>
 	  </tr>
 	  {% endfor %}

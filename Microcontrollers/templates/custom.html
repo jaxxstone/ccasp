@@ -45,12 +45,16 @@
   return true;
   }
 </script>
-
+<div class="well">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Custom Report<br><small>Select date and time ranges to retrieve data</small></h1>
+		</div>
+	</div>
+</div>
 {% block form %}
+
 <form class="form-horizontal" role="form" method="GET" action="{% url 'records:custom_report' nodeid sensorid %}" >
-  <h1>Create a custom report<br>
-    <small>Select the date and time range to retrieve the data</small><br>
-  </h1>
   {% if error %}
   <h2>
     <small style="color:red;" id="error_message">End date and time cannot be less than start date and time</small><br>
@@ -61,7 +65,7 @@
   </h2>
   {% endif %}
   {% csrf_token %}
-  <div class="form-group"> 
+  <div class="form-group" style="margin-left:0px;margin-right:0px;margin-bottom:0px;overflow:hidden"> 
     <div class="form-group">
       <label class="control-label col-sm-2" for="id_startDate" id="label_id_startDate">Start Date:</label>
       <div class="col-sm-2">
@@ -90,7 +94,8 @@
       <button type="submit" class="btn btn-default" onclick="return valid()">Submit</button>
     </div>
     {{ form.tzOffset }}
-  </div>
+    </div>
 </form>
+
 {% endblock %}
 {% endblock content %}

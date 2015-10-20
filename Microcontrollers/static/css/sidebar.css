@@ -43,6 +43,10 @@ body,html{
 	background-color: #ecf0f1;
 }
 
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+	background-color: #FFFAFA;
+}
+
 /* style for affixed sidebar */
 .affix {
    	padding: 0px;
