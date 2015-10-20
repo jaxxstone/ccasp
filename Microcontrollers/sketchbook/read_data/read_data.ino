@@ -13,7 +13,7 @@ const int tempPin = A0;
 const int humidityPin = A1;
 const int moisturePin = A2;
 /* Update frequency to transmit data (in seconds) */
-const int updateFrequency = 60;
+const int updateFrequency = 5;
 /* Store last time that data was transmitted */
 time_t lastTime = now();
 
@@ -48,14 +48,17 @@ void loop()
 void add_data()
 {
   // Make sure time delta is >= update frequency
-  if ((now() - lastTime) >= 60)
+  if ((now() - lastTime) >= updateFrequency)
     {
       /* Temperature pin */
       write_temperature();
+      delay(5);
       /* Humidity pin */
       write_humidity();
+      delay(5);
       /* Moisture pin */
       write_moisture();
+      delay(5);
     } 
 }
 
@@ -66,9 +69,11 @@ void write_moisture()
 {
   delay(2);
   int sensorVal = analogRead(moisturePin);
-  // Convert to voltage
-  float voltage = (sensorVal/1024.0) * 5.0;
-  // TODO
+  delay(2);
+  // Convert to percentage
+  // 0 is 100%, 1023 is 0%
+  sensorVal = map(sensorVal, 0, 1023, 100, 0);
+  delay(2);
   // Set last updated time to current time
   lastTime = now();
   // Write sensor ID

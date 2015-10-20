@@ -50,8 +50,7 @@ class Command(BaseCommand):
             new_node.save()
             new_record.node = new_node
 
-        print "Record " + str(new_record) + " has been added for"
-        print new_record.sensor.name
+        print str(new_record.sensor.name) + " " + str(new_record.value) + " has been added"
         new_record.save()
 
     def convert_to_fahr(temperature):

@@ -58,7 +58,7 @@ while True:
         logger.info('Unable to write to serial port')
         sys.exit(1)
 
-    time.sleep(3)
+    time.sleep(5)
     while ser.inWaiting() > 0:
 
         # Read in sensor UUID
@@ -87,7 +87,7 @@ while True:
             logger.info('Unable to add record')
 
     # Update frequency
-    time.sleep(60)
+    time.sleep(10)
 
 # Close serial connection
 ser.close()

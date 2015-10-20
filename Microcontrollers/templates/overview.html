@@ -14,21 +14,21 @@
       <table id="overview" class="table table-striped">
 	<thead>
 	  <tr>
-	    <th>#</th>
-	    <th>Node</th>
-	    <th>Sensor</th>
-	    <th>Value</th>
-	    <th>Date/Time</th>
+	    <th style="text-align:right">#</th>
+	    <th style="text-align:right">Node</th>
+	    <th style="text-align:right">Sensor</th>
+	    <th style="text-align:right">Value</th>
+	    <th style="text-align:right">Date/Time</th>
 	  </tr>
 	</thead>
 	<tbody>
 	  {% timezone "America/New_York" %}
 	  {% for record in records %}
-	  <tr>
+	  <tr align="right">
 	    <td>{{ forloop.counter }}</td>
 	    <td>{% if record.node__name %}{{ record.node__name }}{% else %}{{ record.node }}{% endif %}</td>
 	    <td>{% if record.sensor__name %}{{ record.sensor__name }}{% else %}{{ record.sensor }}{% endif %}</td>
-	    <td>{{ record.value }}{% if record.sensor__unit %}{{ record.sensor__unit }}{% endif %}</td>
+	    <td>{{ record.value }} {% if record.sensor__unit %}{{ record.sensor__unit }}{% endif %}</td>
 	    <td>{{ record.time_recorded }}</td>
 	  </tr>
 	  {% endfor %}

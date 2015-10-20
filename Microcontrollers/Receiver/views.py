@@ -282,7 +282,7 @@ def overview(request):
     @return: rendered overview.html containing the Node objects and Records
     '''
     # records will hold list of records for each node
-    records = Record.objects.values('node__name', 'sensor__name', 'value', 'time_recorded').order_by('time_recorded').reverse()[:100]
+    records = Record.objects.values('node__name', 'sensor__name', 'sensor__unit', 'value', 'time_recorded').order_by('time_recorded').reverse()[:100]
     # Return rendered template
     return render(request, 'overview.html',
                   {'records': records,})
