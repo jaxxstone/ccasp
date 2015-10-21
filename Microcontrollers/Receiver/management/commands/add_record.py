@@ -53,7 +53,7 @@ class Command(BaseCommand):
         print str(new_record.sensor.name) + " " + str(new_record.value) + " has been added"
         new_record.save()
 
-    def convert_to_fahr(temperature):
-        temperature = (float(val) * (9.0/5.0)) + 32.0
-        temperature = str(val)
+    def convert_to_fahr(self, temperature):
+        temperature = (float(temperature) * (9.0/5.0)) + 32.0
+        temperature = str(temperature)
         return temperature

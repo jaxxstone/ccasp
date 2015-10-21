@@ -98,7 +98,7 @@ void write_humidity()
   Serial.println(humidityPin);
   delay(2);
   // Write value
-  Serial.println(humidity);
+  Serial.println(humidity, 2);
   delay(2);
 }
 
@@ -115,7 +115,7 @@ void write_temperature()
   Serial.println(tempPin);
   delay(2);
   // Write value
-  Serial.println(temperature);
+  Serial.println(temperature, 2);
   delay(2);
 }
   
