@@ -1,5 +1,6 @@
 # ccasp
 Cloud Controlled Automation Fall Semester 2015 Senior Project
+
 *Scope: Capstone senior project. RESTful cloud-based web application to remotely monitor and control Arduino-based microcontrollers communicating over a mesh topology.*
 
 This web application serves as the front-end reporting and management system for a network of Arduino microcontrollers affixed with various sensors -- at this point, temperature, humidity, and soil moisture sensors are supported.
