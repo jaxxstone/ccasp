@@ -55,7 +55,7 @@ class Node(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=1)
         return Record.objects.filter(node=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_week(self):
         '''
@@ -66,7 +66,7 @@ class Node(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=7)
         return Record.objects.filter(node=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_month(self):
         '''
@@ -77,7 +77,7 @@ class Node(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=31)
         return Record.objects.filter(node=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_year(self):
         '''
@@ -88,7 +88,7 @@ class Node(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=365)
         return Record.objects.filter(node=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_custom(self, start, end):
         '''
@@ -99,7 +99,7 @@ class Node(models.Model):
         specified time period
         '''
         return Record.objects.filter(node=self, time_recorded__gte=start,
-                                     time_recorded__lte=end)
+                                     time_recorded__lte=end).order_by('time_recorded')
         
     def get_last_update(self):
         return Record.objects.filter(node=self).last()
@@ -159,7 +159,7 @@ class Sensor(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=1)
         return Record.objects.filter(sensor=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_week(self):
         '''
@@ -170,7 +170,7 @@ class Sensor(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=7)
         return Record.objects.filter(sensor=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_month(self):
         '''
@@ -181,7 +181,7 @@ class Sensor(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=31)
         return Record.objects.filter(sensor=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_year(self):
         '''
@@ -192,7 +192,7 @@ class Sensor(models.Model):
         today = timezone.now()
         date_from = today - timezone.timedelta(days=365)
         return Record.objects.filter(sensor=self,
-                                     time_recorded__gte=date_from)
+                                     time_recorded__gte=date_from).order_by('time_recorded')
 
     def get_records_for_custom(self, start, end):
         '''
@@ -203,4 +203,4 @@ class Sensor(models.Model):
         specified time period
         '''
         return Record.objects.filter(sensor=self, time_recorded__gte=start,
-                                     time_recorded__lte=end)
+                                     time_recorded__lte=end).order_by('time_recorded')

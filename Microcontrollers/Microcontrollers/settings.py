@@ -151,7 +151,7 @@ if _tty_port == '':
 TTY_PORT = str(_tty_port)
 
 # Update frequency for Raspberry Pi Gateway
-UPDATE_FREQUENCY = 6
+UPDATE_FREQUENCY = 2
 
 #http://djangotricks.blogspot.com/2013/12/how-to-store-your-media-files-in-amazon.html
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'

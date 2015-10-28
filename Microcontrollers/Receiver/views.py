@@ -41,7 +41,7 @@ def daily_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time (in ms) for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
-        
+
         # Check if it's Fahrenheit or Celsius
         value = record.value
         if sensor_unit == 'F':
@@ -85,7 +85,7 @@ def weekly_report(request, nodeid=None, sensorid=None):
         # Convert to Epoch time (in ms) for Highcharts
         my_time = int(dt.strptime(my_time, time_format).strftime('%s'))
         my_time *= 1000
-        
+        print my_time, record.time_recorded
         # Check if it's Fahrenheit or Celsius
         value = record.value
         if sensor_unit == 'F':
@@ -325,13 +325,11 @@ def dashboard(request):
     
     # Get nodes and gateway statuses
     nodes = Node.objects.all().order_by('node_id')
-    gateway_status = False
     gateway_time = None
     node_statuses = []
     for node in nodes:
         if node.get_last_update() is not None:
             node_statuses.append(node.get_last_update())
-            gateway_status = True
             gateway_time = node.get_last_update().time_recorded
         else:
             node_statuses.append(node)
@@ -345,13 +343,14 @@ def dashboard(request):
     start_range = parser.parse(os.environ['STARTRANGE'])
     
     # Make sure environmental variable is still reflecting today's date
-    if start_range.day != timezone.now().day:
+    if start_range.day != timezone.datetime.date(timezone.datetime.today()):
         start_range = timezone.datetime.date(timezone.datetime.today())
         os.environ['STARTRANGE'] = str(start_range)
         os.environ['DOWNTIME'] = '0'
-        
+    start_range = parser.parse(os.environ['STARTRANGE'])
+    
     # Add one day to start range to create end range
-    end_range = timezone.timedelta(days=1) + timezone.datetime.date(timezone.now())
+    end_range = timezone.timedelta(days=1) + timezone.datetime.date(timezone.datetime.today())
     
     print 'Start/End Range', start_range, end_range
     # Retrieve records within start and end range
@@ -362,30 +361,29 @@ def dashboard(request):
     # There's new records, check gaps
     if records:
         print 'HAS RECORDS'
-        temp = records[0]
+        last = records[0]
         for record in records:
             current = record.time_recorded
             current = current.minute + (current.second / 60) + (current.hour * 60)
             
-            temp = temp.time_recorded
-            temp = temp.minute + (temp.second / 60) + (temp.hour * 60)
+            last = last.time_recorded
+            last = last.minute + (last.second / 60) + (last.hour * 60)
             
-            if current - temp > settings.UPDATE_FREQUENCY:
-                downtime_counter += current - temp
+            if current - last > settings.UPDATE_FREQUENCY:
+                downtime_counter += current - last
             
-            temp = record
+            last = record
             
         # Calculate gap from last record to now
-        temp = temp.time_recorded
+        last = last.time_recorded
         # Get number of minutes in last record
-        temp = temp.minute + (temp.second / 60) + (temp.hour * 60)
+        last = last.minute + (last.second / 60) + (last.hour * 60)
         # Get number of minutes in current time
         uptime_counter = timezone.now()
         uptime_counter = uptime_counter.minute + (uptime_counter.second / 60) + (uptime_counter.hour * 60)
         # Difference between current and last record > 6, then there's downtime
-        if uptime_counter - temp > settings.UPDATE_FREQUENCY:
-            downtime_counter += uptime_counter - temp
-            gateway_status = False
+        if uptime_counter - last > settings.UPDATE_FREQUENCY:
+            downtime_counter += (uptime_counter - last)
         # Store new downtime
         if 'DOWNTIME' not in os.environ:
             os.environ['DOWNTIME'] = str(downtime_counter)
@@ -402,8 +400,7 @@ def dashboard(request):
         current = current.minute + (current.second / 60) + (current.hour * 60)
         start_range = start_range.minute + (start_range.second / 60) + (start_range.hour * 60)
         if current - start_range > settings.UPDATE_FREQUENCY:
-            downtime_counter += current - start_range
-            gateway_status = False
+            downtime_counter += (current - start_range)
         if 'DOWNTIME' not in os.environ:
             os.environ['DOWNTIME'] = str(downtime_counter)
         else:
@@ -411,6 +408,10 @@ def dashboard(request):
             os.environ['DOWNTIME'] = str(downtime_counter)
         uptime_counter = current - downtime_counter
 
+    gateway_status = True
+    if timezone.now() - Record.objects.last().time_recorded >= timedelta(minutes=settings.UPDATE_FREQUENCY):
+        gateway_status = False
+        
     # Store current time as environmental variable to decrease querysize next
     # request
     os.environ['STARTRANGE'] = str(timezone.now())
