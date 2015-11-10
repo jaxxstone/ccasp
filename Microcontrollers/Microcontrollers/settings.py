@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'Microcontrollers.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'microcontrollers',                      
+        'NAME': str(os.environ['AWS_DB_NAME']),                      
         'USER': str(os.environ['AWS_USER']),
         'PASSWORD': str(os.environ['AWS_PWD']),
         'HOST': str(os.environ['AWS_HOST']),
