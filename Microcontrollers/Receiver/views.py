@@ -409,7 +409,9 @@ def dashboard(request):
         uptime_counter = current - downtime_counter
 
     gateway_status = True
-    if timezone.now() - Record.objects.last().time_recorded >= timedelta(minutes=settings.UPDATE_FREQUENCY):
+    if Record.objects.count() == 0:
+        gateway_status = False
+    elif timezone.now() - Record.objects.last().time_recorded >= timedelta(minutes=settings.UPDATE_FREQUENCY):
         gateway_status = False
         
     # Store current time as environmental variable to decrease querysize next
