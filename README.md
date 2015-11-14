@@ -10,6 +10,7 @@ The web application is hosted on Amazon Web Services (AWS) and receives sensor v
 The application can be accessed with:
 
 username `guest`
+
 password `guest1234`
 
 [CCASP homepage](https://www.ccasp.io)
