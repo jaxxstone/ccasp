@@ -7,6 +7,9 @@ This web application serves as the front-end reporting and management system for
 
 The web application is hosted on Amazon Web Services (AWS) and receives sensor values from a Raspberry Pi intermediary gateway. The network of microcontrollers transmit the values recorded by their respective sensors to the Raspberry, which populates the AWS RDS database.
 
-The application can be accessed with the username `guest`, password `guest1234`.
+The application can be accessed with:
 
-[CCASP homepage](http://ccasp.elasticbeanstalk.com/)
+username `guest`
+password `guest1234`
+
+[CCASP homepage](https://www.ccasp.io)
