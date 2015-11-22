@@ -10,6 +10,7 @@ import sys
 import django
 import logging
 import logging.handlers
+import mandrill
 
 # Set up logging
 LOG_FILENAME = '/tmp/read_data.log'
@@ -42,6 +43,14 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 django.setup()
 from django.conf import settings
 from django.core.management import call_command
+from Receiver.models import UserProfile
+
+# Setup Mandrill client for e-mail notifications
+mandrill_client = mandrill.Mandrill('')
+
+# Setup send-to
+send_to = UserProfile.objects.filter(
+    notifications=True).values('user__email', 'user__first_name', 'user__last_name')
 
 # Open serial connection and wait
 # TTY PORT defined in Microcontroller/Microcontroller/settings
@@ -94,6 +103,22 @@ while True:
     # Restart if error
     if success is False:
         try:
+            for user in send_to:
+                message = {'from_email': 'robert.lacher@gmail.com',
+                           'from_name': 'Robert Lacher',
+                           'html': '<p>The Raspberry Pi has stopped updating.</p>',
+                           'to': {'email': user.user__email,
+                                  'name' : '%s %s' % (user.user__first_name,
+                                                      user.user__last_name),
+                                  'type': 'to'
+                                  }
+                           }
+                result = mandrill_client.messages.send(message=message, async=False,
+                                                       ip_pool='Main Pool')
+        except mandril.Error, e:
+            logger.info('A mandrill error occurred: %s - %s' % (e.__class__, e))
+            
+        try:
             logger.info('Trying to restart daemon...')
             if subprocess.call(
                     ['sudo', 'service', 'read_data.sh', 'restart']) == 0:
@@ -105,6 +130,7 @@ while True:
             
     # Update frequency
     time.sleep(60)
+                       
 
 # Close serial connection
 ser.close()

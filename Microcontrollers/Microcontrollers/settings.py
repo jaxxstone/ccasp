@@ -19,9 +19,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = str(os.environ['DJANGO_SECRET_KEY'])
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*',]
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 # Application definition
 INSTALLED_APPS = (
@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'Microcontrollers.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': str(os.environ['AWS_DB_NAME']),                      
+        'NAME': str(os.environ['AWS_DB_NAME']),
         'USER': str(os.environ['AWS_USER']),
         'PASSWORD': str(os.environ['AWS_PWD']),
         'HOST': str(os.environ['AWS_HOST']),

@@ -6,6 +6,8 @@ database.'''
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+import pytz
 
 class Node(models.Model):
     '''Node model represents an end node'''
@@ -204,3 +206,9 @@ class Sensor(models.Model):
         '''
         return Record.objects.filter(sensor=self, time_recorded__gte=start,
                                      time_recorded__lte=end).order_by('time_recorded')
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    timezone = models.CharField(max_length=100, blank=True, null=True,
+                                choices=tuple(pytz.common_timezones))                          
+    notifications = models.BooleanField(default=False)

@@ -3,15 +3,17 @@ in the Microcontrollers project. It creates and renders the user-generated
 reports, status pages, etc.'''
 
 from django.shortcuts import render
-from Receiver.models import Node, Record, Sensor
-from Receiver.forms import CustomReport
+from Receiver.models import Node, Record, Sensor, UserProfile
+from Receiver.forms import CustomReport, EditProfileForm
 import json
 import os
 from django.utils import timezone
 from datetime import datetime as dt, timedelta
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from dateutil import parser
 from Microcontrollers import settings
+from django.shortcuts import redirect
 
 def convert_to_fahrenheit(value):
     return float(value) * 1.8 + 32
@@ -465,3 +467,25 @@ def media(request):
     @return: rendered media.html
     '''
     return render(request, 'media.html')
+
+@login_required(login_url='login.html')
+def edit_profile(request):
+    user = User.objects.get(username=request.user.username)
+    form = None
+    if not UserProfile.objects.get(user=user):
+        profile = UserProfile()
+        profile.user = user
+        profile.save()
+    form = EditProfileForm()
+    return render(request, 'edit_profile.html',
+                  {'form': form})
+
+@login_required(login_url='login.html')
+def change_profile(request):
+    user_profile = UserProfile.objects.get(user__username=request.user.username)
+    print request.POST.get('timezone')
+    print request.POST.get('notifications')
+    user_profile.timezone = request.POST.get('timezone')
+    user_profile.notifications = request.POST.get('notifications')
+    user_profile.save()
+    return redirect('records:dashboard')
