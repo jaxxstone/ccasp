@@ -5,6 +5,7 @@ calls Django management command to commit new record to database'''
 import serial
 import time
 import os
+import subprocess
 import sys
 import django
 import logging
@@ -59,6 +60,7 @@ while True:
         sys.exit(1)
 
     time.sleep(5)
+    success = True
     while ser.inWaiting() > 0:
 
         # Read in sensor UUID
@@ -68,6 +70,7 @@ while True:
             time.sleep(1)
         except:
             logger.info('Unable to read from serial')
+            success = False
             continue
         
         # Read in sensor values
@@ -76,6 +79,7 @@ while True:
             val = val.rstrip('\r\n')
         except:
             logger.info('Unable to read values')
+            success = False
             continue
     
         # Add record to database
@@ -84,8 +88,21 @@ while True:
         try:
             call_command('add_record', (sensor, val,))
         except:
+            success = False
             logger.info('Unable to add record')
 
+    # Restart if error
+    if success is False:
+        try:
+            logger.info('Trying to restart daemon...')
+            if subprocess.call(
+                    ['sudo', 'service', 'read_data.sh', 'restart']) == 0:
+                logger.info('Restarted daemon')
+            else:
+                logging.info('Not sure if exception is raised')
+        except:
+            logger.info('Failed to restart daemon')
+            
     # Update frequency
     time.sleep(60)
 

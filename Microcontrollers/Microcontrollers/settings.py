@@ -156,8 +156,14 @@ UPDATE_FREQUENCY = 2
 #http://djangotricks.blogspot.com/2013/12/how-to-store-your-media-files-in-amazon.html
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_S3_SECURE_URLS = False
+AWS_S3_SECURE_URLS = True
 AWS_QUERYSTRING_AUTH = False
 AWS_ACCESS_KEY_ID = str(os.environ['AWS_ACCESS_KEY'])
 AWS_SECRET_ACCESS_KEY = str(os.environ['AWS_SECRET_KEY'])
 AWS_STORAGE_BUCKET_NAME = 'microcontrollersstatic'
+
+# Enable HTTPS redirect
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
