@@ -44,9 +44,11 @@ django.setup()
 from django.conf import settings
 from django.core.management import call_command
 from Receiver.models import UserProfile
+import datetime
 
 # Setup Mandrill client for e-mail notifications
 mandrill_client = mandrill.Mandrill('')
+last_issue = datetime.datetime.now()
 
 # Setup send-to
 send_to = UserProfile.objects.filter(
@@ -102,22 +104,25 @@ while True:
 
     # Restart if error
     if success is False:
-        try:
-            for user in send_to:
-                message = {'from_email': 'robert.lacher@gmail.com',
-                           'from_name': 'Robert Lacher',
-                           'html': '<p>The Raspberry Pi has stopped updating.</p>',
-                           'to': {'email': user.user__email,
-                                  'name' : '%s %s' % (user.user__first_name,
-                                                      user.user__last_name),
-                                  'type': 'to'
-                                  }
-                           }
-                result = mandrill_client.messages.send(message=message, async=False,
-                                                       ip_pool='Main Pool')
-        except mandril.Error, e:
-            logger.info('A mandrill error occurred: %s - %s' % (e.__class__, e))
-            
+        if datetime.timedelta(datetime.datetime.now(), last_issue).min > 60:
+            try:
+                for user in send_to:
+                    message = {'from_email': 'robert.lacher@gmail.com',
+                               'from_name': 'Robert Lacher',
+                               'html': '<p>The Raspberry Pi has stopped updating.</p>',
+                               'to': {'email': user.user__email,
+                                      'name' : '%s %s' % (user.user__first_name,
+                                                          user.user__last_name),
+                                      'type': 'to'
+                                      }
+                               }
+                    result = mandrill_client.messages.send(message=message, async=False,
+                                                           ip_pool='Main Pool')
+            except mandril.Error, e:
+                logger.info('A mandrill error occurred: %s - %s' % (e.__class__, e))
+        else:
+            pass
+
         try:
             logger.info('Trying to restart daemon...')
             if subprocess.call(
@@ -127,6 +132,8 @@ while True:
                 logging.info('Not sure if exception is raised')
         except:
             logger.info('Failed to restart daemon')
+    else:
+        pass
             
     # Update frequency
     time.sleep(60)
