@@ -210,5 +210,7 @@ class Sensor(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     timezone = models.CharField(max_length=100, blank=True, null=True,
-                                choices=tuple(pytz.common_timezones))                          
+                                choices=(zip(pytz.common_timezones,
+                                             pytz.common_timezones)))
+
     notifications = models.BooleanField(default=False)

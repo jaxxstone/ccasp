@@ -470,22 +470,46 @@ def media(request):
 
 @login_required(login_url='login.html')
 def edit_profile(request):
+    ''' Renders form for adjusting user timezone, notifications '''
+    # Get User from request
     user = User.objects.get(username=request.user.username)
+    # Get UserProfile from user
+    userprofile = UserProfile.objects.get(user=user)
     form = None
-    if not UserProfile.objects.get(user=user):
+
+    # UserProfile for user hasn't been created yet
+    if not userprofile:
         profile = UserProfile()
         profile.user = user
         profile.save()
-    form = EditProfileForm()
+        # Render blank edit profile form
+        form = EditProfileForm()
+
+    # UserProfile exists for User
+    if userprofile:
+        # Setup initial values for form showing user's current choices
+        initial_timezone = userprofile.timezone
+        initial_notification = userprofile.notifications
+        form = EditProfileForm(initial={'notifications': initial_notification})
+
     return render(request, 'edit_profile.html',
-                  {'form': form})
+                  {'form': form,
+                   'user_tz': initial_timezone})
 
 @login_required(login_url='login.html')
 def change_profile(request):
+    ''' POST changes to database from received form '''
+    # Get UserProfile for user
     user_profile = UserProfile.objects.get(user__username=request.user.username)
-    print request.POST.get('timezone')
-    print request.POST.get('notifications')
+    # Get timezone selection from POST request
     user_profile.timezone = request.POST.get('timezone')
+    # Get notification selection from POST request
     user_profile.notifications = request.POST.get('notifications')
+
+    # If None, it was left blank so set to False
+    if user_profile.notifications == None:
+        user_profile.notifications = False
+    # Update database
     user_profile.save()
+    # Redirect user to dashboard
     return redirect('records:dashboard')

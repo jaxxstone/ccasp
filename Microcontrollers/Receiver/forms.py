@@ -32,4 +32,5 @@ class EditProfileForm(forms.Form):
     tz_choices = zip(pytz.common_timezones, pytz.common_timezones)
     timezone = forms.ChoiceField(label='Timezone',
                                  choices=(tz_choices))
+
     notifications = forms.BooleanField(label='Receive E-mail Notifications')
