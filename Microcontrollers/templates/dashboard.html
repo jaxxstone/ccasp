@@ -1,182 +1,182 @@
 {% extends 'base.html' %} {% load tz %} {% load static from staticfiles %}
 {% block content %}
 
-	<div class="well">
-		<div class="row">
-			<div class="col-md-12">
-				<h1>Dashboard<br><small>Shows the current state of the system</small></h1>
-			</div>
-		</div>
+<div class="well">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Dashboard<br><small>Shows the current state of the system</small></h1>
+    </div>
+  </div>
+</div>
+{% timezone "America/New_York" %}
+<!-- Start Gateway Status -->
+<div class="row">
+  <div class="col-md-6">
+    <h2>Gateway Status<br><small>Shows the status of the Raspberry Pi Gateway</small></h2>
+    <div class="row">
+      <div class="col-md-6" style="padding-left:0px">
+	{% if gateway_status %}
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <div class="btn-group pull-right">
+	      <span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+		    title="Gateway Status" data-content="Shows whether your Raspberry Pi device is running and has Internet connectivity."></span>
+	    </div>
+	    <div class="panel-title">
+	      <h5>
+		<span class="label label-success" style="vertical-align:top; align:right">Online</span> Gateway
+	      </h5>
+	    </div>
+	  </div>
+	  <div class="panel-body">
+	    <h5><i>Last Updated: {{ gateway_time }}</i></h5>
+	  </div>
 	</div>
-	{% timezone "America/New_York" %}
-	<!-- Start Gateway Status -->
-	<div class="row">
-		<div class="col-md-6">
-			<h2>Gateway Status<br><small>Shows the status of the Raspberry Pi Gateway</small></h2>
-				<div class="row">
-					<div class="col-md-6" style="padding-left:0px">
-					{% if gateway_status %}
-					  <div class="panel panel-primary">
-			  			<div class="panel-heading">
-				        <div class="btn-group pull-right">
-					      	<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
-					      	title="Gateway Status" data-content="Shows whether your Raspberry Pi device is running and has Internet connectivity."></span>
-				        </div>
-			  				<div class="panel-title">
-								<h5>
-									<span class="label label-success" style="vertical-align:top; align:right">Online</span> Gateway
-								</h5>
-								</div>
-							</div>
-							<div class="panel-body">
-								<h5><i>Last Updated: {{ gateway_time }}</i></h5>
-							</div>
-						</div>
-					{% else %}
-						<div class="panel panel-primary">
-			  			<div class="panel-heading">
-			  				<div class="btn-group pull-right">
-					      	<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
-					      	title="Gateway Status" data-content="Shows whether your Raspberry Pi device is running and has Internet connectivity."></span>
-				        </div>
-								<h5>
-									<span class="label label-danger" style="vertical-align:top; align:right">Offline</span> Gateway
-								</h5>
-							</div>
-							<div class="panel-body">
-								<h5><i>Last Updated: {{ gateway_time }}</i></h5>
-							</div>
-						</div>
-					{% endif %} 
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<script>
-					$(function () {
-				    $('#container').highcharts({
-				        chart: {
-				            plotBackgroundColor: 'rgba(224,224,224,0.0)',
-				            backgroundColor: 'rgba(224,224,224,0.0)',
-				            plotBorderWidth: null,
-				            plotShadow: false,
-				            type: 'pie',
-				            options3d: {
-				                enabled: true,
-				                alpha: 45,
-				                beta: 0,
-				            }
-				        },
-				        credits: {
-				        	enabled: false,
-				        },
-				        title: {
-				            text: 'Gateway Uptime for ' + new Date().toDateString(),
-				        },
-				        tooltip: {
-				            pointFormat: '{series.name}: <b>{point.y} minutes</b>'
-				        },
-				        plotOptions: {
-				            pie: {
-				                allowPointSelect: true,
-				                cursor: 'pointer',
-				                depth: 35,
-				                dataLabels: {
-				                    enabled: true,
-				                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-				                    style: {
-				                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-				                    }
-				                },
-				            }
-				        },
-				        series: [{
-				            name: "Gateway Availability",
-				            colorByPoint: true,
-				            data: [{
-				                name: "Online",
-				                y: {{ uptime }}
-				            }, {
-				                name: "Offline",
-				                y: {{ downtime }},
-				            	}]
-					        }]
-					    });
-					});
-				</script>
-			<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
-			</div>
-		</div>
+	{% else %}
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <div class="btn-group pull-right">
+	      <span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+		    title="Gateway Status" data-content="Shows whether your Raspberry Pi device is running and has Internet connectivity."></span>
+	    </div>
+	    <h5>
+	      <span class="label label-danger" style="vertical-align:top; align:right">Offline</span> Gateway
+	    </h5>
+	  </div>
+	  <div class="panel-body">
+	    <h5><i>Last Updated: {{ gateway_time }}</i></h5>
+	  </div>
 	</div>
-	<!-- End Gateway Status -->
-	<hr>
-	<!-- Start Node Status -->
-	<div class="row">
-		<div class="col-md-12">
-			<h2>Node Status<br><small>Shows the current status of end nodes</small></h2>
-		</div>
+	{% endif %} 
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <script>
+      $(function () {
+      $('#container').highcharts({
+      chart: {
+      plotBackgroundColor: 'rgba(224,224,224,0.0)',
+      backgroundColor: 'rgba(224,224,224,0.0)',
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie',
+      options3d: {
+      enabled: true,
+      alpha: 45,
+      beta: 0,
+      }
+      },
+      credits: {
+      enabled: false,
+      },
+      title: {
+      text: 'Gateway Uptime for ' + new Date().toDateString(),
+      },
+      tooltip: {
+      pointFormat: '{series.name}: <b>{point.y} minutes</b>'
+      },
+      plotOptions: {
+      pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      depth: 35,
+      dataLabels: {
+      enabled: true,
+      format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+      style: {
+      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+      }
+      },
+      }
+      },
+      series: [{
+      name: "Gateway Availability",
+      colorByPoint: true,
+      data: [{
+      name: "Online",
+      y: {{ uptime }}
+      }, {
+      name: "Offline",
+      y: {{ downtime }},
+      }]
+      }]
+      });
+      });
+    </script>
+    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
+    </div>
+  </div>
+</div>
+<!-- End Gateway Status -->
+<hr>
+<!-- Start Node Status -->
+<div class="row">
+  <div class="col-md-12">
+    <h2>Node Status<br><small>Shows the current status of end nodes</small></h2>
+  </div>
+</div>
+<div class="row">
+  {% for status in node_status %}
+  <div class="col-md-4">
+    {% if gateway_status %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+	<div class="btn-group pull-right">
+	  <span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+		title="Microcontroller Status" data-content="Shows whether your Arduino Microcontroller device is running and can communicate with the Gateway."></span>
 	</div>
-	<div class="row">
-		{% for status in node_status %}
-			<div class="col-md-4">
-			{% if gateway_status %}
-	  		<div class="panel panel-primary">
-	  			<div class="panel-heading">
-	  				<div class="btn-group pull-right">
-			      	<span class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-placement="bottom"
-			      	title="Microcontroller Status" data-content="Shows whether your Arduino Microcontroller device is running and can communicate with the Gateway."></span>
-	        	</div>
-	        	<div class="panel-title">
-	        		{% if status.node.name %}
-							<h5>
-								<span class="label label-success" style="vertical-align:top; align:right">Online</span>
-								{{ status.node.name}}
-							</h5>
-							{% else %}
-							<h5>
-								<span class="label label-danger" style="vertical-align:top; align:right">Offline</span>
-								{{ status.name }}
-							</h5>
-							{% endif %}
-						</div>
-					</div>
-					<div class="panel-body">
-						<h5>{% if status.node.description %}{{ status.node.description }}{% else %}{{ status.description }}{% endif %}</h5>
-						{% if status.time_recorded %}
-							<h5><i>Last Updated: {{ status.time_recorded }}</i></h5>
-						{% else %}
-							<h5><i>Last Updated: No data found</i></h5>
-						{% endif %}
-					</div>
-				</div>
-			{% else %} 
-				<div class="panel panel-primary">
-	  			<div class="panel-heading">
-	  				<div class="btn-group pull-right">
-		      		<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
-		      		title="Node Status shows the status of your Arduino microcontroller device. If the device is running and has recently communicated with the Gateway, the status will show as Online. If the device is not running or has not recently communicated with the Gateway, the status will show as Offline."></span>
-	        	</div>
-	        	<div class="panel-title">
-							<h5>
-								<span class="label label-danger" style="vertical-align:top; align:right">Offline</span>
-								{% if status.node.name %}{{ status.node.name}}{% else %}{{ status.name }}{% endif %}
-							</h5>
-						</div>
-					</div>
-					<div class="panel-body">
-						<h5>{% if status.node.description %}{{ status.node.description }}{% else %}{{ status.description }}{% endif %}</h5>
-						{% if status.time_recorded %}
-							<h5>Last Updated: {{ status.time_recorded }}</h5>
-						{% else %}
-							<h5><i>Last Updated: No data found for {{ status }}</i></h5>
-						{% endif %}
-					</div>
-				</div>
-			{% endif %}
-			</div>
-		{% endfor %}
+	<div class="panel-title">
+	  {% if status.node.name %}
+	  <h5>
+	    <span class="label label-success" style="vertical-align:top; align:right">Online</span>
+	    {{ status.node.name}}
+	  </h5>
+	  {% else %}
+	  <h5>
+	    <span class="label label-danger" style="vertical-align:top; align:right">Offline</span>
+	    {{ status.name }}
+	  </h5>
+	  {% endif %}
 	</div>
-	{% endtimezone %}
-	<!-- End Node Status -->	
-	
+      </div>
+      <div class="panel-body">
+	<h5>{% if status.node.description %}{{ status.node.description }}{% else %}{{ status.description }}{% endif %}</h5>
+	{% if status.time_recorded %}
+	<h5><i>Last Updated: {{ status.time_recorded }}</i></h5>
+	{% else %}
+	<h5><i>Last Updated: No data found</i></h5>
+	{% endif %}
+      </div>
+    </div>
+    {% else %} 
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+	<div class="btn-group pull-right">
+	  <span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-question-sign"
+		title="Node Status shows the status of your Arduino microcontroller device. If the device is running and has recently communicated with the Gateway, the status will show as Online. If the device is not running or has not recently communicated with the Gateway, the status will show as Offline."></span>
+	</div>
+	<div class="panel-title">
+	  <h5>
+	    <span class="label label-danger" style="vertical-align:top; align:right">Offline</span>
+	    {% if status.node.name %}{{ status.node.name}}{% else %}{{ status.name }}{% endif %}
+	  </h5>
+	</div>
+      </div>
+      <div class="panel-body">
+	<h5>{% if status.node.description %}{{ status.node.description }}{% else %}{{ status.description }}{% endif %}</h5>
+	{% if status.time_recorded %}
+	<h5>Last Updated: {{ status.time_recorded }}</h5>
+	{% else %}
+	<h5><i>Last Updated: No data found for {{ status }}</i></h5>
+	{% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endtimezone %}
+<!-- End Node Status -->	
+
 {% endblock content %}
