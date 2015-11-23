@@ -47,12 +47,10 @@ from Receiver.models import UserProfile
 import datetime
 
 # Setup Mandrill client for e-mail notifications
-mandrill_client = mandrill.Mandrill('')
-last_issue = datetime.datetime.now()
+mandrill_client = mandrill.Mandrill('y6pbIFH4RJb4mAbfm17auA')
 
-# Setup send-to
-send_to = UserProfile.objects.filter(
-    notifications=True).values('user__email', 'user__first_name', 'user__last_name')
+# last issue stores time of last e-mail sent out
+last_issue = datetime.datetime.now()
 
 # Open serial connection and wait
 # TTY PORT defined in Microcontroller/Microcontroller/settings
@@ -62,6 +60,7 @@ try:
 except:
     logger.info('Unable to open serial connection')
     sys.exit(1)
+
 
 while True:
     try:
@@ -101,30 +100,58 @@ while True:
         except:
             success = False
             logger.info('Unable to add record')
+            continue
 
-    # Restart if error
+    # Try to restart daemon, send e-mail notification if error
     if success is False:
-        if datetime.timedelta(datetime.datetime.now(), last_issue).min > 60:
-            try:
-                for user in send_to:
-                    message = {'from_email': 'robert.lacher@gmail.com',
-                               'from_name': 'Robert Lacher',
-                               'html': '<p>The Raspberry Pi has stopped updating.</p>',
-                               'to': {'email': user.user__email,
-                                      'name' : '%s %s' % (user.user__first_name,
-                                                          user.user__last_name),
-                                      'type': 'to'
-                                      }
-                               }
-                    result = mandrill_client.messages.send(message=message, async=False,
-                                                           ip_pool='Main Pool')
-            except mandril.Error, e:
-                logger.info('A mandrill error occurred: %s - %s' % (e.__class__, e))
-        else:
-            pass
 
+        # One send e-mail once per hour
+        if ((datetime.datetime.now() - last_issue).seconds / 60) > 60:
+
+            # Try to send e-mail
+            try:
+                # query database to retrieve users with e-mail notifications setup
+                send_to = UserProfile.objects.filter(
+                    notifications=True).values('user__email', 'user__first_name', 'user__last_name')
+
+                # get email, names for each user
+                out = []
+                for user in send_to:
+                    out.append({'email': user['user__email'],
+                                'name': '%s %s' % (user['user__first_name'], user['user__last_name']),
+                                'type': 'to'})
+
+                # create message
+                message = {
+                    'from_email': 'robert.lacher@gmail.com',
+                    'from_name': 'Robert Lacher',
+                    'subject': 'Raspberry Pi Downtime %s' % datetime.datetime.today().strftime('%m/%d/%y'),
+                    'html': '<p>The Raspberry Pi has stopped updating.</p>',
+                    'to': out,
+                    }
+
+                # send message
+                result = mandrill_client.messages.send(message=message, async=False,
+                                                           ip_pool='Main Pool')
+
+                # reset time of last e-mail notification
+                last_issue = datetime.datetime.now()
+                
+                # log success of sent e-mail
+                logger.info('E-mail notification sent successfully')
+
+            # Log mandrill exception
+            except mandrill.Error, e:
+                logger.info('A mandrill error occurred: %s - %s' % (e.__class__, e))
+
+        else:
+            logger.info('Not sending e-mail -- %s minutes left' % (str(((datetime.datetime.now() - last_issue).seconds / 60))))
+
+        # Try to restart daemon
         try:
             logger.info('Trying to restart daemon...')
+
+            # Call subprocess command to restart service
             if subprocess.call(
                     ['sudo', 'service', 'read_data.sh', 'restart']) == 0:
                 logger.info('Restarted daemon')
@@ -132,12 +159,13 @@ while True:
                 logging.info('Not sure if exception is raised')
         except:
             logger.info('Failed to restart daemon')
+
     else:
+        # fall through
         pass
             
     # Update frequency
     time.sleep(60)
                        
-
 # Close serial connection
 ser.close()
